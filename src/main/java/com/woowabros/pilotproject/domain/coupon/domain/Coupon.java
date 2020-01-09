@@ -17,14 +17,22 @@ public class Coupon extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Date registrableDate;
+    private Date issuableDate;
+
+    @Column(nullable = false)
+    private Date usableDate;
 
     @Builder
-    public Coupon(Date registrableDate) {
-        this.registrableDate = registrableDate;
+    public Coupon(Date issuableDate, Date usableDate) {
+        this.issuableDate = issuableDate;
+        this.usableDate = usableDate;
     }
 
     public boolean isPossibleToRegister() {
-        return new Date().before(registrableDate);
+        return new Date().before(issuableDate);
+    }
+
+    public boolean isPossibleToUse() {
+        return new Date().before(usableDate);
     }
 }
