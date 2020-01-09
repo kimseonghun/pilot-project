@@ -1,15 +1,10 @@
 package com.woowabros.pilotproject.domain.coupon.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -20,4 +15,16 @@ public class Coupon extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Date registrableDate;
+
+    @Builder
+    public Coupon(Date registrableDate) {
+        this.registrableDate = registrableDate;
+    }
+
+    public boolean isPossibleToRegister() {
+        return new Date().before(registrableDate);
+    }
 }
