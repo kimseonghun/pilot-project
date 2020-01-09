@@ -23,7 +23,7 @@ public class CouponCode {
     }
 
     private String format(String code) {
-        return code.replaceAll("-", "");
+        return code.replaceAll("-", "").toUpperCase();
     }
 }
 
