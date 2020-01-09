@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IssuedCouponServiceTest {
@@ -38,5 +38,6 @@ class IssuedCouponServiceTest {
 
         // then
         assertThat(result).isEqualTo(issuedCoupon);
+        verify(issuedCouponRepository, times(1)).save(any());
     }
 }

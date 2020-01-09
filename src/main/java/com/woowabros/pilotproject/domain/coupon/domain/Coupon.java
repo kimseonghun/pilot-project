@@ -25,11 +25,15 @@ public class Coupon extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer price;
 
+    @Column(nullable = false)
+    private Integer amount;
+
     @Builder
-    public Coupon(Date issuableDate, Date usableDate, int price) {
+    public Coupon(Date issuableDate, Date usableDate, int price, int amount) {
         this.issuableDate = issuableDate;
         this.usableDate = usableDate;
         this.price = price;
+        this.amount = amount;
     }
 
     public boolean isPossibleToRegister() {

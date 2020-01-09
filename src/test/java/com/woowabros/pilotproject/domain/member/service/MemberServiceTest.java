@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -38,6 +38,7 @@ class MemberServiceTest {
 
         // then
         assertThat(result.getMemberName()).isEqualTo(member.getMemberName());
+        verify(memberRepository, times(1)).save(any());
     }
 
     @Test
@@ -51,6 +52,7 @@ class MemberServiceTest {
 
         // when & then
         assertDoesNotThrow(() -> memberService.login(member));
+        verify(memberRepository, times(1)).findByMemberName(anyString());
     }
 
     @Test
@@ -64,5 +66,6 @@ class MemberServiceTest {
 
         // when & then
         assertThrows(LoginFailException.class, () -> memberService.login(member));
+        verify(memberRepository, times(1)).findByMemberName(anyString());
     }
 }
