@@ -19,6 +19,7 @@ public class MemberService {
     @Transactional
     public MemberResponseDto save(Member member) {
         Member newMember = memberRepository.save(member);
+
         return MemberResponseDto.builder()
                 .id(newMember.getId())
                 .memberName(newMember.getMemberName())

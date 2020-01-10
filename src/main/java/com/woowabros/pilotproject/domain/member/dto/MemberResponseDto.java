@@ -1,13 +1,11 @@
 package com.woowabros.pilotproject.domain.member.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class MemberResponseDto {
     private Long id;
     private String memberName;

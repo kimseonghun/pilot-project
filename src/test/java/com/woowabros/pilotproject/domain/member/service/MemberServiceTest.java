@@ -4,6 +4,7 @@ import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.domain.MemberRepository;
 import com.woowabros.pilotproject.domain.member.dto.MemberResponseDto;
 import com.woowabros.pilotproject.domain.member.exception.LoginFailException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,27 +28,34 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    private Member member;
+
+    @BeforeEach
+    void setUp() {
+        member = Member.builder()
+                .memberName("memberName")
+                .password("password")
+                .build();
+    }
+
     @Test
     void 회원_생성_테스트() {
         // given
-        Member member = mock(Member.class);
         given(memberRepository.save(member)).willReturn(member);
 
         // when
-        MemberResponseDto result = memberService.save(member);
+        MemberResponseDto response = memberService.save(member);
 
         // then
-        assertThat(result.getMemberName()).isEqualTo(member.getMemberName());
+        assertThat(response).isEqualTo(MemberResponseDto.builder()
+                .memberName(member.getMemberName())
+                .build());
         verify(memberRepository, times(1)).save(any());
     }
 
     @Test
     void 회원_로그인_테스트() {
         // given
-        Member member = Member.builder()
-                .memberName("memberName")
-                .password("password")
-                .build();
         given(memberRepository.findByMemberName("memberName")).willReturn(Optional.of(member));
 
         // when & then
@@ -58,10 +66,6 @@ class MemberServiceTest {
     @Test
     void 회원_로그인_실패_예외처리() {
         // given
-        Member member = Member.builder()
-                .memberName("memberName")
-                .password("password")
-                .build();
         given(memberRepository.findByMemberName("memberName")).willReturn(Optional.empty());
 
         // when & then
