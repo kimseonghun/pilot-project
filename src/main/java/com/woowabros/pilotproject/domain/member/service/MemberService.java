@@ -4,6 +4,7 @@ import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.domain.MemberRepository;
 import com.woowabros.pilotproject.domain.member.dto.MemberResponseDto;
 import com.woowabros.pilotproject.domain.member.exception.LoginFailException;
+import com.woowabros.pilotproject.domain.member.exception.NotFoundMemberException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,5 +36,9 @@ public class MemberService {
         }
 
         return member;
+    }
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElseThrow(NotFoundMemberException::new);
     }
 }

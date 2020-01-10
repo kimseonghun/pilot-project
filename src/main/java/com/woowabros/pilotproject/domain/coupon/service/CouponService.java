@@ -3,12 +3,13 @@ package com.woowabros.pilotproject.domain.coupon.service;
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
 import com.woowabros.pilotproject.domain.coupon.domain.CouponRepository;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponResponseDto;
+import com.woowabros.pilotproject.domain.coupon.exception.NotFoundCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponService {
@@ -31,8 +32,7 @@ public class CouponService {
     }
 
     public CouponResponseDto findById(Long id) {
-        Coupon coupon = couponRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 쿠폰은 존재하지 않습니다."));
+        Coupon coupon = couponRepository.findById(id).orElseThrow(NotFoundCouponException::new);
 
         return CouponResponseDto.builder()
                 .issuableDate(coupon.getIssuableDate())
@@ -45,6 +45,13 @@ public class CouponService {
         return couponRepository.findAll(pageable)
                 .map(this::dto)
                 .toList();
+    }
+
+    public List<CouponResponseDto> findIssuableCoupons() {
+        return couponRepository.findAll().stream()
+                .filter(Coupon::isIssuableDate)
+                .map(this::dto)
+                .collect(Collectors.toList());
     }
 
     private CouponResponseDto dto(Coupon coupon) {

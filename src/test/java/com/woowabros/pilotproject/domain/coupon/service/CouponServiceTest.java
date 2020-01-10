@@ -4,6 +4,7 @@ import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
 import com.woowabros.pilotproject.domain.coupon.domain.CouponRepository;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
+import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,14 +42,21 @@ class CouponServiceTest {
     private IssuedCouponService issuedCouponService;
 
     private Coupon coupon;
+    private CouponResponseDto couponResponseDto;
 
     @BeforeEach
     void setUp() {
         coupon = Coupon.builder()
-                .issuableDate(mock(Date.class))
-                .usableDate(mock(Date.class))
+                .issuableDate(DateUtil.tomorrow())
+                .usableDate(DateUtil.tomorrow())
                 .price(1000)
                 .amount(10)
+                .build();
+
+        couponResponseDto = CouponResponseDto.builder()
+                .issuableDate(coupon.getIssuableDate())
+                .usableDate(coupon.getUsableDate())
+                .price(coupon.getPrice())
                 .build();
     }
 
@@ -76,11 +84,7 @@ class CouponServiceTest {
         CouponResponseDto response = couponService.findById(1L);
 
         // then
-        assertThat(response).isEqualTo(CouponResponseDto.builder()
-                .issuableDate(coupon.getIssuableDate())
-                .usableDate(coupon.getUsableDate())
-                .price(coupon.getPrice())
-                .build());
+        assertThat(response).isEqualTo(couponResponseDto);
         verify(couponRepository, times(1)).findById(anyLong());
     }
 
@@ -106,5 +110,20 @@ class CouponServiceTest {
                 .allMatch(element -> element.getUsableDate().equals(coupon.getUsableDate()))
                 .allMatch(element -> element.getPrice().equals(coupon.getPrice()));
         verify(couponRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    void 발급_가능_쿠폰_다건_조회_테스트() {
+        // given
+        List<Coupon> coupons = Collections.singletonList(coupon);
+        given(couponRepository.findAll()).willReturn(coupons);
+
+        // when
+        List<CouponResponseDto> response = couponService.findIssuableCoupons();
+
+        // then
+        assertThat(response).hasSize(1)
+                .contains(couponResponseDto);
+        verify(couponRepository, times(1)).findAll();
     }
 }

@@ -1,8 +1,8 @@
 package com.woowabros.pilotproject.domain.coupon.domain;
 
+import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,7 +13,7 @@ class CouponTest {
     @Test
     void 해당_쿠폰이_등록가능한_날인지_테스트() {
         // given
-        Date issuableDate = getConstraintsDate();
+        Date issuableDate = DateUtil.tomorrow();
         Coupon coupon = Coupon.builder()
                 .issuableDate(issuableDate)
                 .usableDate(mock(Date.class))
@@ -21,13 +21,13 @@ class CouponTest {
                 .build();
 
         // when & then
-        assertThat(coupon.isPossibleToRegister()).isTrue();
+        assertThat(coupon.isIssuableDate()).isTrue();
     }
 
     @Test
     void 해당_쿠폰이_사용가능한_날인지_테스트() {
         // given
-        Date usableDate = getConstraintsDate();
+        Date usableDate = DateUtil.tomorrow();
         Coupon coupon = Coupon.builder()
                 .issuableDate(mock(Date.class))
                 .usableDate(usableDate)
@@ -35,12 +35,6 @@ class CouponTest {
                 .build();
 
         // when & then
-        assertThat(coupon.isPossibleToUse()).isTrue();
-    }
-  
-    private Date getConstraintsDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2020, Calendar.DECEMBER, 31);
-        return calendar.getTime();
+        assertThat(coupon.isUsableDate()).isTrue();
     }
 }

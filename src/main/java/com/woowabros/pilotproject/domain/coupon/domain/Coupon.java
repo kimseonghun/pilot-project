@@ -36,11 +36,11 @@ public class Coupon extends BaseTimeEntity {
         this.amount = amount;
     }
 
-    public boolean isPossibleToRegister() {
+    public boolean isIssuableDate() {
         return new Date().before(issuableDate);
     }
 
-    public boolean isPossibleToUse() {
+    public boolean isUsableDate() {
         return new Date().before(usableDate);
     }
 }
