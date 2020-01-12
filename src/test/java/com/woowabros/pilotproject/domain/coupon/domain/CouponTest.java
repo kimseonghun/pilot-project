@@ -15,6 +15,7 @@ class CouponTest {
         // given
         Date issuableDate = DateUtil.tomorrow();
         Coupon coupon = Coupon.builder()
+                .name("주마회가 쏜다")
                 .issuableDate(issuableDate)
                 .usableDate(mock(Date.class))
                 .price(1000)
@@ -29,6 +30,7 @@ class CouponTest {
         // given
         Date usableDate = DateUtil.tomorrow();
         Coupon coupon = Coupon.builder()
+                .name("주마회가 쏜다")
                 .issuableDate(mock(Date.class))
                 .usableDate(usableDate)
                 .price(1000)

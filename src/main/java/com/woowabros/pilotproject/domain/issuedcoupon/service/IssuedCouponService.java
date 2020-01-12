@@ -5,6 +5,7 @@ import com.woowabros.pilotproject.domain.coupon.service.CouponInnerService;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCouponRepository;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponCode;
+import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
@@ -69,5 +70,23 @@ public class IssuedCouponService {
                 .collect(Collectors.toList());
 
         return !issuedCoupons.contains(issuedCoupon.getCoupon());
+    }
+
+    public List<IssuedCouponResponseDto> findUsableCouponsByMemberId(Long memberId) {
+        Member member = memberService.findById(memberId);
+
+        return issuedCouponRepository.findAllByMember(member).stream()
+                .filter(IssuedCoupon::isIssuableStatus)
+                .filter(issuedCoupon -> issuedCoupon.getCoupon().isUsableDate())
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    private IssuedCouponResponseDto toDto(IssuedCoupon issuedCoupon) {
+        return IssuedCouponResponseDto.builder()
+                .couponCode(issuedCoupon.getCouponCode().getCode())
+                .couponName(issuedCoupon.getCoupon().getName())
+                .couponPrice(issuedCoupon.getCoupon().getPrice())
+                .build();
     }
 }

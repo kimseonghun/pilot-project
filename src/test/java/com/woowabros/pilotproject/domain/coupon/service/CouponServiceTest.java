@@ -45,6 +45,7 @@ class CouponServiceTest {
     @BeforeEach
     void setUp() {
         coupon = Coupon.builder()
+                .name("주마회가 쏜다")
                 .issuableDate(DateUtil.tomorrow())
                 .usableDate(DateUtil.tomorrow())
                 .price(1000)

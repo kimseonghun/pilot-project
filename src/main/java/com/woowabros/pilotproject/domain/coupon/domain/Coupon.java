@@ -20,6 +20,9 @@ public class Coupon extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private Date issuableDate;
 
     @Column(nullable = false)
@@ -35,7 +38,8 @@ public class Coupon extends BaseTimeEntity {
     private List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
     @Builder
-    public Coupon(Date issuableDate, Date usableDate, int price, int amount) {
+    public Coupon(String name, Date issuableDate, Date usableDate, int price, int amount) {
+        this.name = name;
         this.issuableDate = issuableDate;
         this.usableDate = usableDate;
         this.price = price;
