@@ -40,7 +40,22 @@ public class IssuedCoupon extends BaseTimeEntity {
     public IssuedCoupon(String couponCode, Coupon coupon, Member member) {
         this.couponCode = CouponCode.of(couponCode);
         this.status = CouponIssuedType.ISSUABLE;
-        this.coupon = coupon;
         this.member = member;
+        createCoupon(coupon);
+    }
+
+    private void createCoupon(Coupon coupon) {
+        coupon.getIssuedCoupons().add(this);
+        this.coupon = coupon;
+    }
+
+    public boolean isIssuableStatus() {
+        return CouponIssuedType.ISSUABLE.equals(this.status);
+    }
+
+    public IssuedCoupon issueTo(Member member) {
+        this.member = member;
+        this.status = CouponIssuedType.USABLE;
+        return this;
     }
 }

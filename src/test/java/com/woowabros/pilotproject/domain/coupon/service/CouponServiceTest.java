@@ -1,7 +1,6 @@
 package com.woowabros.pilotproject.domain.coupon.service;
 
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
-import com.woowabros.pilotproject.domain.coupon.domain.CouponRepository;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
 import org.assertj.core.util.DateUtil;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,7 +34,7 @@ class CouponServiceTest {
     private CouponService couponService;
 
     @Mock
-    private CouponRepository couponRepository;
+    private CouponInnerService couponInnerService;
 
     @Mock
     private IssuedCouponService issuedCouponService;
@@ -63,29 +61,29 @@ class CouponServiceTest {
     @Test
     void 쿠폰_저장_테스트() {
         // given
-        given(couponRepository.save(coupon)).willReturn(coupon);
-        given(issuedCouponService.issue(coupon)).willReturn(any());
+        given(couponInnerService.save(coupon)).willReturn(coupon);
+        given(issuedCouponService.create(coupon)).willReturn(any());
 
         // when
-        Coupon newCoupon = couponService.save(coupon);
+        Coupon newCoupon = couponService.create(coupon);
 
         // then
         assertThat(newCoupon).isEqualTo(coupon);
-        verify(couponRepository, times(1)).save(any());
-        verify(issuedCouponService, times(10)).issue(any());
+        verify(couponInnerService, times(1)).save(any());
+        verify(issuedCouponService, times(10)).create(any());
     }
 
     @Test
     void 쿠폰_단건_조회_테스트() {
         // given
-        given(couponRepository.findById(anyLong())).willReturn(Optional.of(coupon));
+        given(couponInnerService.findById(anyLong())).willReturn(coupon);
 
         // when
         CouponResponseDto response = couponService.findById(1L);
 
         // then
         assertThat(response).isEqualTo(couponResponseDto);
-        verify(couponRepository, times(1)).findById(anyLong());
+        verify(couponInnerService, times(1)).findById(anyLong());
     }
 
     @ParameterizedTest
@@ -98,7 +96,7 @@ class CouponServiceTest {
                         .mapToObj(index -> coupon)
                         .collect(Collectors.toList())
         );
-        given(couponRepository.findAll(pageable)).willReturn(coupons);
+        given(couponInnerService.findAll(pageable)).willReturn(coupons);
 
         // when
         List<CouponResponseDto> response = couponService.findAllByPageable(pageable);
@@ -109,14 +107,14 @@ class CouponServiceTest {
                 .allMatch(element -> element.getIssuableDate().equals(coupon.getIssuableDate()))
                 .allMatch(element -> element.getUsableDate().equals(coupon.getUsableDate()))
                 .allMatch(element -> element.getPrice().equals(coupon.getPrice()));
-        verify(couponRepository, times(1)).findAll(pageable);
+        verify(couponInnerService, times(1)).findAll(pageable);
     }
 
     @Test
     void 발급_가능_쿠폰_다건_조회_테스트() {
         // given
         List<Coupon> coupons = Collections.singletonList(coupon);
-        given(couponRepository.findAll()).willReturn(coupons);
+        given(couponInnerService.findAll()).willReturn(coupons);
 
         // when
         List<CouponResponseDto> response = couponService.findIssuableCoupons();
@@ -124,6 +122,6 @@ class CouponServiceTest {
         // then
         assertThat(response).hasSize(1)
                 .contains(couponResponseDto);
-        verify(couponRepository, times(1)).findAll();
+        verify(couponInnerService, times(1)).findAll();
     }
 }

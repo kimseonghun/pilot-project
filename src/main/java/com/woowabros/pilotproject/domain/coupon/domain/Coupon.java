@@ -1,10 +1,13 @@
 package com.woowabros.pilotproject.domain.coupon.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
+import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +30,9 @@ public class Coupon extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer amount;
+
+    @OneToMany(mappedBy = "coupon")
+    private List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
     @Builder
     public Coupon(Date issuableDate, Date usableDate, int price, int amount) {
