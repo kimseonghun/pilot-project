@@ -56,6 +56,7 @@ public class IssuedCoupon extends BaseTimeEntity {
     public IssuedCoupon issueTo(Member member) {
         this.member = member;
         this.status = CouponIssuedType.USABLE;
+        this.coupon.subtractAmount();
         return this;
     }
 }

@@ -2,6 +2,7 @@ package com.woowabros.pilotproject.domain.coupon.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
+import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon extends BaseTimeEntity {
+    private static final int EXHAUSTED_COUPON_AMOUNT = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +49,17 @@ public class Coupon extends BaseTimeEntity {
     }
 
     public boolean isIssuableDate() {
-        return new Date().before(issuableDate);
+        return new Date().before(issuableDate) && this.amount > EXHAUSTED_COUPON_AMOUNT;
     }
 
     public boolean isUsableDate() {
         return new Date().before(usableDate);
+    }
+
+    public Integer subtractAmount() {
+        if (this.amount == EXHAUSTED_COUPON_AMOUNT) {
+            throw new NotIssuableCouponException();
+        }
+        return --this.amount;
     }
 }
