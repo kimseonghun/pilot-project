@@ -8,19 +8,19 @@ import org.junit.jupiter.params.provider.EnumSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class CouponIssuedTypeTest {
+class CouponStatusTest {
 
     @ParameterizedTest
-    @EnumSource(CouponIssuedType.class)
-    void 실제_쿠폰_타입_생성_테스트(CouponIssuedType couponIssuedType) {
+    @EnumSource(CouponStatus.class)
+    void 실제_쿠폰_타입_생성_테스트(CouponStatus couponStatus) {
         // given
-        int code = couponIssuedType.getCode();
+        int code = couponStatus.getCode();
 
         // when
-        CouponIssuedType type = CouponIssuedType.ofCode(code);
+        CouponStatus type = CouponStatus.ofCode(code);
 
         // then
-        assertThat(type).isEqualTo(couponIssuedType);
+        assertThat(type).isEqualTo(couponStatus);
     }
 
     @Test
@@ -29,6 +29,6 @@ class CouponIssuedTypeTest {
         int code = -999;
 
         // when & then
-        assertThrows(NotFoundCouponIssuedTypeException.class, () -> CouponIssuedType.ofCode(code));
+        assertThrows(NotFoundCouponIssuedTypeException.class, () -> CouponStatus.ofCode(code));
     }
 }

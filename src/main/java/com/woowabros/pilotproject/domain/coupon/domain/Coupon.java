@@ -1,6 +1,7 @@
 package com.woowabros.pilotproject.domain.coupon.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
+import com.woowabros.pilotproject.domain.coupon.exception.CannotCreateCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import lombok.*;
@@ -41,6 +42,10 @@ public class Coupon extends BaseTimeEntity {
 
     @Builder
     public Coupon(String name, Date issuableDate, Date usableDate, int price, int amount) {
+        if (issuableDate.after(usableDate)) {
+            throw new CannotCreateCouponException();
+        }
+
         this.name = name;
         this.issuableDate = issuableDate;
         this.usableDate = usableDate;

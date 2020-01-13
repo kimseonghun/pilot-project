@@ -72,6 +72,7 @@ class CouponInnerServiceTest {
     void 현재_사용가능한_쿠폰_조회_테스트() {
         // given
         Coupon coupon = Coupon.builder()
+                .issuableDate(DateUtil.now())
                 .usableDate(DateUtil.tomorrow())
                 .build();
         given(couponRepository.findById(anyLong())).willReturn(Optional.of(coupon));
@@ -85,6 +86,7 @@ class CouponInnerServiceTest {
     void 현재_사용할_수_없는_쿠폰_조회_시_예외_테스트() {
         // given
         Coupon coupon = Coupon.builder()
+                .issuableDate(DateUtil.yesterday())
                 .usableDate(DateUtil.yesterday())
                 .build();
         given(couponRepository.findById(anyLong())).willReturn(Optional.of(coupon));

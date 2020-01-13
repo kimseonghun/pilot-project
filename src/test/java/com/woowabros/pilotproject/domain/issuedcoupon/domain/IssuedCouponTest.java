@@ -1,12 +1,15 @@
 package com.woowabros.pilotproject.domain.issuedcoupon.domain;
 
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
-import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponIssuedType;
+import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponStatus;
+import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
+import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotUsableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 class IssuedCouponTest {
@@ -37,7 +40,7 @@ class IssuedCouponTest {
     }
 
     @Test
-    void 발급_상태_확인_테스트() {
+    void 발급_가능_상태_확인_테스트() {
         assertThat(issuedCoupon.isIssuableStatus()).isTrue();
     }
 
@@ -47,6 +50,34 @@ class IssuedCouponTest {
         issuedCoupon.issueTo(mock(Member.class));
 
         // then
-        assertThat(issuedCoupon.getStatus()).isEqualTo(CouponIssuedType.USABLE);
+        assertThat(issuedCoupon.getStatus()).isEqualTo(CouponStatus.USABLE);
+    }
+
+    @Test
+    void 발급_가능_상태가_아닌_경우의_쿠폰_발급_예외_테스트() {
+        // given
+        Member member = mock(Member.class);
+        issuedCoupon = issuedCoupon.issueTo(member);
+
+        // when & then
+        assertThrows(NotIssuableCouponException.class, () -> issuedCoupon.issueTo(member));
+    }
+
+    @Test
+    void 쿠폰_사용_테스트() {
+        // given
+        issuedCoupon = issuedCoupon.issueTo(mock(Member.class));
+
+        // when
+        IssuedCoupon response = issuedCoupon.use();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(CouponStatus.COMPLETED);
+    }
+
+    @Test
+    void 사용_가능_상태가_아닌_쿠폰_사용_예외_테스트() {
+        // when & then
+        assertThrows(NotUsableCouponException.class, () -> issuedCoupon.use());
     }
 }

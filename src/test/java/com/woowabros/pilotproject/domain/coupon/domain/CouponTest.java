@@ -1,9 +1,12 @@
 package com.woowabros.pilotproject.domain.coupon.domain;
 
+import com.woowabros.pilotproject.domain.coupon.exception.CannotCreateCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,6 +23,19 @@ class CouponTest {
                 .price(1000)
                 .amount(1)
                 .build();
+    }
+
+    @Test
+    void 발급가능날짜가_사용가능날짜보다_이후인_경우_쿠폰_생성_예외_테스트() {
+        // given
+        Date issuableDate = DateUtil.tomorrow();
+        Date usableDate = DateUtil.yesterday();
+
+        // when & then
+        assertThrows(CannotCreateCouponException.class, () -> Coupon.builder()
+                .issuableDate(issuableDate)
+                .usableDate(usableDate)
+                .build());
     }
 
     @Test
