@@ -6,6 +6,7 @@ import com.woowabros.pilotproject.domain.menu.service.MenuService;
 import com.woowabros.pilotproject.domain.order.domain.Order;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenuRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,15 +34,23 @@ class OrderMenuServiceTest {
     @Mock
     private MenuService menuService;
 
-    @Test
-    void 주문_메뉴_저장_테스트() {
-        // given
-        Menu menu = mock(Menu.class);
-        Order order = mock(Order.class);
-        OrderMenu orderMenu = OrderMenu.builder()
+    private Menu menu;
+    private Order order;
+    private OrderMenu orderMenu;
+
+    @BeforeEach
+    void setUp() {
+        menu = mock(Menu.class);
+        order = mock(Order.class);
+        orderMenu = OrderMenu.builder()
                 .order(order)
                 .menu(menu)
                 .build();
+    }
+
+    @Test
+    void 주문_메뉴_저장_테스트() {
+        // given
         given(menuService.findById(anyLong())).willReturn(menu);
         given(orderMenuRepository.save(any())).willReturn(orderMenu);
 
@@ -55,11 +64,6 @@ class OrderMenuServiceTest {
     @Test
     void 주문별_메뉴_목록_조회_테스트() {
         // given
-        Menu menu = mock(Menu.class);
-        OrderMenu orderMenu = OrderMenu.builder()
-                .order(mock(Order.class))
-                .menu(menu)
-                .build();
         given(orderMenuRepository.findAllByOrder(any())).willReturn(Collections.singletonList(orderMenu));
 
         // when

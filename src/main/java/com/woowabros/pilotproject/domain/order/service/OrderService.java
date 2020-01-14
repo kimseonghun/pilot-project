@@ -50,7 +50,13 @@ public class OrderService {
         return order;
     }
 
-    public List<OrderResponseDto> findByMember(Long memberId) {
+    public OrderResponseDto findOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(NotFoundOrderException::new);
+
+        return toDto(order);
+    }
+
+    public List<OrderResponseDto> findOrdersByMemberId(Long memberId) {
         Member member = memberService.findById(memberId);
 
         return orderRepository.findAllByMember(member).stream()
@@ -71,6 +77,7 @@ public class OrderService {
                 .orderStatus(order.getStatus().getName())
                 .menus(orderMenuService.findByOrder(order))
                 .coupons(issuedCouponService.findUsedCouponByOrderId(order))
+                .totalPrice(order.getTotalPrice())
                 .build();
     }
 }

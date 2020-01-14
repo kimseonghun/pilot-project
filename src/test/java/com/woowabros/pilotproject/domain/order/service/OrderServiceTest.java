@@ -49,6 +49,9 @@ class OrderServiceTest {
 
     private Member member;
     private Order order;
+    private List<MenuResponseDto> menus;
+    private List<IssuedCouponResponseDto> coupons;
+    private OrderResponseDto orderResponseDto;
 
     @BeforeEach
     void setUp() {
@@ -59,34 +62,18 @@ class OrderServiceTest {
                 .totalPrice(36000)
                 .member(member)
                 .build();
-    }
 
-    @Test
-    void 주문_내역_조회_테스트() {
-        // given
-        List<MenuResponseDto> menus = Collections.singletonList(mock(MenuResponseDto.class));
-        List<IssuedCouponResponseDto> coupons = Collections.singletonList(mock(IssuedCouponResponseDto.class));
+        menus = Collections.singletonList(mock(MenuResponseDto.class));
+        coupons = Collections.singletonList(mock(IssuedCouponResponseDto.class));
 
-        given(memberService.findById(any())).willReturn(member);
-        given(orderRepository.findAllByMember(any())).willReturn(Collections.singletonList(order));
-        given(orderMenuService.findByOrder(any())).willReturn(menus);
-        given(issuedCouponService.findUsedCouponByOrderId(any())).willReturn(coupons);
-
-        // when
-        List<OrderResponseDto> orders = orderService.findByMember(1L);
-
-        // then
-        assertThat(orders).contains(OrderResponseDto.builder()
+        orderResponseDto = OrderResponseDto.builder()
                 .orderId(order.getId())
                 .menus(menus)
                 .paymentType(order.getPayment().getName())
                 .orderStatus(order.getStatus().getName())
                 .coupons(coupons)
-                .build());
-        verify(memberService, times(1)).findById(anyLong());
-        verify(orderRepository, times(1)).findAllByMember(any());
-        verify(orderMenuService, times(1)).findByOrder(any());
-        verify(issuedCouponService, times(1)).findUsedCouponByOrderId(any());
+                .totalPrice(order.getTotalPrice())
+                .build();
     }
 
     @Test
@@ -107,6 +94,42 @@ class OrderServiceTest {
                 .totalPrice(menu.getPrice())
                 .build());
         verify(memberService, times(1)).findById(anyLong());
+    }
+
+    @Test
+    void 주문_내역_조회_테스트() {
+        // given
+        given(memberService.findById(any())).willReturn(member);
+        given(orderRepository.findAllByMember(any())).willReturn(Collections.singletonList(order));
+        given(orderMenuService.findByOrder(any())).willReturn(menus);
+        given(issuedCouponService.findUsedCouponByOrderId(any())).willReturn(coupons);
+
+        // when
+        List<OrderResponseDto> orders = orderService.findOrdersByMemberId(1L);
+
+        // then
+        assertThat(orders).contains(orderResponseDto);
+        verify(memberService, times(1)).findById(anyLong());
+        verify(orderRepository, times(1)).findAllByMember(any());
+        verify(orderMenuService, times(1)).findByOrder(any());
+        verify(issuedCouponService, times(1)).findUsedCouponByOrderId(any());
+    }
+
+    @Test
+    void 주문_단건_조회() {
+        // given
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
+        given(orderMenuService.findByOrder(any())).willReturn(menus);
+        given(issuedCouponService.findUsedCouponByOrderId(any())).willReturn(coupons);
+
+        // when
+        OrderResponseDto result = orderService.findOrderById(1L);
+
+        // then
+        assertThat(result).isEqualTo(orderResponseDto);
+        verify(orderRepository, times(1)).findById(anyLong());
+        verify(orderMenuService, times(1)).findByOrder(any());
+        verify(issuedCouponService, times(1)).findUsedCouponByOrderId(any());
     }
 
     @Test
