@@ -45,10 +45,10 @@ class MemberServiceTest {
         given(memberRepository.save(member)).willReturn(member);
 
         // when
-        MemberResponseDto response = memberService.save(member);
+        MemberResponseDto result = memberService.save(member);
 
         // then
-        assertThat(response).isEqualTo(MemberResponseDto.builder()
+        assertThat(result).isEqualTo(MemberResponseDto.builder()
                 .memberName(member.getMemberName())
                 .build());
         verify(memberRepository, times(1)).save(any());

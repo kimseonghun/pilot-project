@@ -7,6 +7,7 @@ import com.woowabros.pilotproject.domain.order.domain.Order;
 import com.woowabros.pilotproject.domain.order.domain.OrderRepository;
 import com.woowabros.pilotproject.domain.order.dto.OrderCreateRequestDto;
 import com.woowabros.pilotproject.domain.order.dto.OrderResponseDto;
+import com.woowabros.pilotproject.domain.order.exception.NotFoundOrderException;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import com.woowabros.pilotproject.domain.ordermenu.service.OrderMenuService;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,12 @@ public class OrderService {
         return orderRepository.findAllByMember(member).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public Order cancel(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(NotFoundOrderException::new);
+
+        return order.cancel();
     }
 
     private OrderResponseDto toDto(Order order) {

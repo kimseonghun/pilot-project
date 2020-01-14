@@ -8,6 +8,7 @@ import com.woowabros.pilotproject.domain.menu.domain.Menu;
 import com.woowabros.pilotproject.domain.menu.dto.MenuResponseDto;
 import com.woowabros.pilotproject.domain.order.domain.Order;
 import com.woowabros.pilotproject.domain.order.domain.OrderRepository;
+import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
 import com.woowabros.pilotproject.domain.order.dto.OrderCreateRequestDto;
 import com.woowabros.pilotproject.domain.order.dto.OrderResponseDto;
@@ -21,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,13 +98,27 @@ class OrderServiceTest {
         given(memberService.findById(anyLong())).willReturn(member);
 
         // when
-        Order response = orderService.save(dto);
+        Order result = orderService.save(dto);
 
         // then
-        assertThat(response).isEqualTo(Order.builder()
+        assertThat(result).isEqualTo(Order.builder()
                 .member(member)
                 .payment(dto.getPaymentType())
                 .totalPrice(menu.getPrice())
                 .build());
+        verify(memberService, times(1)).findById(anyLong());
+    }
+
+    @Test
+    void 주문_취소_테스트() {
+        // given
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
+
+        // when
+        Order result = orderService.cancel(1L);
+
+        // then
+        assertThat(result.getStatus()).isEqualTo(OrderStatus.CANCEL);
+        verify(orderRepository, times(1)).findById(anyLong());
     }
 }

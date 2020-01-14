@@ -70,10 +70,10 @@ class IssuedCouponTest {
         issuedCoupon = issuedCoupon.issueTo(mock(Member.class));
 
         // when
-        IssuedCoupon response = issuedCoupon.use(mock(Order.class));
+        IssuedCoupon result = issuedCoupon.use(mock(Order.class));
 
         // then
-        assertThat(response.getStatus()).isEqualTo(CouponStatus.COMPLETED);
+        assertThat(result.getStatus()).isEqualTo(CouponStatus.COMPLETED);
     }
 
     @Test

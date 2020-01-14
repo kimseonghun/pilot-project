@@ -81,10 +81,10 @@ class IssuedCouponServiceTest {
         given(issuedCouponRepository.findAllByMember(any())).willReturn(Collections.singletonList(mock(IssuedCoupon.class)));
 
         // when
-        IssuedCoupon response = issuedCouponService.issue(1L, 1L);
+        IssuedCoupon result = issuedCouponService.issue(1L, 1L);
 
         // then
-        assertThat(response.getMember()).isEqualTo(member);
+        assertThat(result.getMember()).isEqualTo(member);
         verify(memberService, times(1)).findById(anyLong());
         verify(couponInnerService, times(1)).findUsableCouponById(anyLong());
         verify(issuedCouponRepository, times(1)).findAllByMember(any());
@@ -97,10 +97,10 @@ class IssuedCouponServiceTest {
         given(issuedCouponRepository.findAllByMember(any())).willReturn(Collections.singletonList(issuedCoupon));
 
         // when
-        List<IssuedCouponResponseDto> response = issuedCouponService.findUsableCouponsByMemberId(1L);
+        List<IssuedCouponResponseDto> result = issuedCouponService.findUsableCouponsByMemberId(1L);
 
         // then
-        assertThat(response).contains(IssuedCouponResponseDto.builder()
+        assertThat(result).contains(IssuedCouponResponseDto.builder()
                 .couponCode(issuedCoupon.getCouponCode().getCode())
                 .couponName(issuedCoupon.getCoupon().getName())
                 .couponPrice(issuedCoupon.getCoupon().getPrice())
@@ -115,10 +115,10 @@ class IssuedCouponServiceTest {
         given(issuedCouponRepository.findAllByOrder(any())).willReturn(Collections.singletonList(issuedCoupon));
 
         // when
-        List<IssuedCouponResponseDto> response = issuedCouponService.findUsedCouponByOrderId(mock(Order.class));
+        List<IssuedCouponResponseDto> result = issuedCouponService.findUsedCouponByOrderId(mock(Order.class));
 
         // then
-        assertThat(response).contains(IssuedCouponResponseDto.builder()
+        assertThat(result).contains(IssuedCouponResponseDto.builder()
                 .couponCode(issuedCoupon.getCouponCode().getCode())
                 .couponName(issuedCoupon.getCoupon().getName())
                 .couponPrice(issuedCoupon.getCoupon().getPrice())
@@ -133,10 +133,10 @@ class IssuedCouponServiceTest {
         given(issuedCouponRepository.findByCouponCode(any())).willReturn(Optional.of(issuedCoupon.issueTo(mock(Member.class))));
 
         // when
-        IssuedCoupon response = issuedCouponService.useCoupons("1234", order);
+        IssuedCoupon result = issuedCouponService.useCoupons("1234", order);
 
         // then
-        assertThat(response.getOrder()).isEqualTo(order);
+        assertThat(result.getOrder()).isEqualTo(order);
         verify(issuedCouponRepository, times(1)).findByCouponCode(any());
     }
 }

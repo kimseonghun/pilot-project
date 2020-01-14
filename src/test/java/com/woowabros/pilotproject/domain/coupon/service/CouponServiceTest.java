@@ -80,10 +80,10 @@ class CouponServiceTest {
         given(couponInnerService.findById(anyLong())).willReturn(coupon);
 
         // when
-        CouponResponseDto response = couponService.findById(1L);
+        CouponResponseDto result = couponService.findById(1L);
 
         // then
-        assertThat(response).isEqualTo(couponResponseDto);
+        assertThat(result).isEqualTo(couponResponseDto);
         verify(couponInnerService, times(1)).findById(anyLong());
     }
 
@@ -100,10 +100,10 @@ class CouponServiceTest {
         given(couponInnerService.findAll(pageable)).willReturn(coupons);
 
         // when
-        List<CouponResponseDto> response = couponService.findAllByPageable(pageable);
+        List<CouponResponseDto> result = couponService.findAllByPageable(pageable);
 
         // then
-        assertThat(response)
+        assertThat(result)
                 .hasSize(size)
                 .allMatch(element -> element.getIssuableDate().equals(coupon.getIssuableDate()))
                 .allMatch(element -> element.getUsableDate().equals(coupon.getUsableDate()))
@@ -118,10 +118,10 @@ class CouponServiceTest {
         given(couponInnerService.findAll()).willReturn(coupons);
 
         // when
-        List<CouponResponseDto> response = couponService.findIssuableCoupons();
+        List<CouponResponseDto> result = couponService.findIssuableCoupons();
 
         // then
-        assertThat(response).hasSize(1)
+        assertThat(result).hasSize(1)
                 .contains(couponResponseDto);
         verify(couponInnerService, times(1)).findAll();
     }

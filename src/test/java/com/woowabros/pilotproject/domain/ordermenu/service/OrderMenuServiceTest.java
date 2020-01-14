@@ -46,10 +46,10 @@ class OrderMenuServiceTest {
         given(orderMenuRepository.save(any())).willReturn(orderMenu);
 
         // when
-        OrderMenu response = orderMenuService.save(order, 1L);
+        OrderMenu result = orderMenuService.save(order, 1L);
 
         // then
-        assertThat(response).isEqualTo(orderMenu);
+        assertThat(result).isEqualTo(orderMenu);
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.woowabros.pilotproject.domain.order.domain.converter.OrderStatusAttri
 import com.woowabros.pilotproject.domain.order.domain.converter.PaymentTypeAttributeConverter;
 import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
+import com.woowabros.pilotproject.domain.order.exception.CannotCancelOrderException;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import lombok.*;
 
@@ -49,6 +50,15 @@ public class Order extends BaseTimeEntity {
                 .map(orderMenu -> orderMenu.getMenu().getPrice())
                 .reduce(0, Integer::sum);
 
+        return this;
+    }
+
+    public Order cancel() {
+        if (OrderStatus.CANCEL.equals(this.status)) {
+            throw new CannotCancelOrderException();
+        }
+
+        this.status = OrderStatus.CANCEL;
         return this;
     }
 }
