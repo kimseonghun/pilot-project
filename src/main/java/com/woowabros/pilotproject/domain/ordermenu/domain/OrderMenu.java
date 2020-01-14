@@ -1,7 +1,6 @@
 package com.woowabros.pilotproject.domain.ordermenu.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
-import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.menu.domain.Menu;
 import com.woowabros.pilotproject.domain.order.domain.Order;
 import lombok.*;
@@ -19,7 +18,7 @@ public class OrderMenu extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_order_to_order_menu"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_orders_to_order_menu"))
     private Order order;
 
     @ManyToOne

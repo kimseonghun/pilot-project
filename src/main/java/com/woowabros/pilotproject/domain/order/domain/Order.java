@@ -6,11 +6,14 @@ import com.woowabros.pilotproject.domain.order.domain.converter.OrderStatusAttri
 import com.woowabros.pilotproject.domain.order.domain.converter.PaymentTypeAttributeConverter;
 import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
+import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id", callSuper = false)
@@ -30,6 +33,7 @@ public class Order extends BaseTimeEntity {
     private PaymentType payment;
 
     @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_member_to_orders"))
     private Member member;
 
     @Builder
@@ -38,5 +42,13 @@ public class Order extends BaseTimeEntity {
         this.payment = payment;
         this.member = member;
         this.status = OrderStatus.COMPLETED;
+    }
+
+    public Order calculateTotalPrice(List<OrderMenu> orderMenus) {
+        this.totalPrice = orderMenus.stream()
+                .map(orderMenu -> orderMenu.getMenu().getPrice())
+                .reduce(0, Integer::sum);
+
+        return this;
     }
 }

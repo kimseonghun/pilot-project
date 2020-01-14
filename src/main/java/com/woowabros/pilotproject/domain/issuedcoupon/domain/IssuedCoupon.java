@@ -72,12 +72,13 @@ public class IssuedCoupon extends BaseTimeEntity {
         return this;
     }
 
-    public IssuedCoupon use() {
+    public IssuedCoupon use(Order order) {
         if (!this.status.equals(CouponStatus.USABLE)) {
             throw new NotUsableCouponException();
         }
 
         this.status = CouponStatus.COMPLETED;
+        this.order = order;
         return this;
     }
 }

@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,5 +124,19 @@ class IssuedCouponServiceTest {
                 .couponPrice(issuedCoupon.getCoupon().getPrice())
                 .build());
         verify(issuedCouponRepository, times(1)).findAllByOrder(any());
+    }
+
+    @Test
+    void 쿠폰_사용_테스트() {
+        // given
+        Order order = mock(Order.class);
+        given(issuedCouponRepository.findByCouponCode(any())).willReturn(Optional.of(issuedCoupon.issueTo(mock(Member.class))));
+
+        // when
+        IssuedCoupon response = issuedCouponService.useCoupons("1234", order);
+
+        // then
+        assertThat(response.getOrder()).isEqualTo(order);
+        verify(issuedCouponRepository, times(1)).findByCouponCode(any());
     }
 }

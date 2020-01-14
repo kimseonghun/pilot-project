@@ -6,6 +6,7 @@ import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCouponRepository;
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponCode;
 import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
+import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotFoundIssuedCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
@@ -87,6 +88,14 @@ public class IssuedCouponService {
         return issuedCouponRepository.findAllByOrder(order).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public IssuedCoupon useCoupons(String couponCode, Order order) {
+        IssuedCoupon issuedCoupon = issuedCouponRepository.findByCouponCode(CouponCode.of(couponCode))
+                .orElseThrow(NotFoundIssuedCouponException::new);
+
+        return issuedCoupon.use(order);
     }
 
     private IssuedCouponResponseDto toDto(IssuedCoupon issuedCoupon) {

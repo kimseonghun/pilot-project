@@ -12,7 +12,7 @@ class PaymentTypeTest {
 
     @ParameterizedTest
     @EnumSource(PaymentType.class)
-    void 주문_수단_생성_테스트(PaymentType payment) {
+    void code를_이용한_주문_수단_생성_테스트(PaymentType payment) {
         // given
         int code = payment.getCode();
 
@@ -24,11 +24,33 @@ class PaymentTypeTest {
     }
 
     @Test
-    void 주문_수단_생성_시_예외_테스트() {
+    void code를_이용한_주문_수단_생성_시_예외_테스트() {
         // given
         int code = -999;
 
         // when & then
         assertThrows(NotFoundPaymentTypeException.class, () -> PaymentType.ofCode(code));
+    }
+
+    @ParameterizedTest
+    @EnumSource(PaymentType.class)
+    void 이름을_이용한_주문_수단_생성_테스트(PaymentType payment) {
+        // given
+        String name = payment.getName();
+
+        // when
+        PaymentType paymentType = PaymentType.ofName(name);
+
+        // then
+        assertThat(paymentType).isEqualTo(payment);
+    }
+
+    @Test
+    void 이름을_이용한_주문_수단_생성_시_예외_테스트() {
+        // given
+        String name = "wrong name";
+
+        // when & then
+        assertThrows(NotFoundPaymentTypeException.class, () -> PaymentType.ofName(name));
     }
 }

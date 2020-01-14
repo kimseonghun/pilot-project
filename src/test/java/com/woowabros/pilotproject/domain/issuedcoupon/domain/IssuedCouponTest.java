@@ -5,6 +5,7 @@ import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponStatus;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotUsableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
+import com.woowabros.pilotproject.domain.order.domain.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +70,7 @@ class IssuedCouponTest {
         issuedCoupon = issuedCoupon.issueTo(mock(Member.class));
 
         // when
-        IssuedCoupon response = issuedCoupon.use();
+        IssuedCoupon response = issuedCoupon.use(mock(Order.class));
 
         // then
         assertThat(response.getStatus()).isEqualTo(CouponStatus.COMPLETED);
@@ -78,6 +79,6 @@ class IssuedCouponTest {
     @Test
     void 사용_가능_상태가_아닌_쿠폰_사용_예외_테스트() {
         // when & then
-        assertThrows(NotUsableCouponException.class, () -> issuedCoupon.use());
+        assertThrows(NotUsableCouponException.class, () -> issuedCoupon.use(mock(Order.class)));
     }
 }

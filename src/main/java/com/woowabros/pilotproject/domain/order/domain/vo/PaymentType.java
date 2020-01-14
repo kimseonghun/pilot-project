@@ -25,4 +25,11 @@ public enum PaymentType {
                 .findAny()
                 .orElseThrow(NotFoundPaymentTypeException::new);
     }
+
+    public static PaymentType ofName(String name) {
+        return Arrays.stream(values())
+                .filter(type -> type.getName().equals(name))
+                .findAny()
+                .orElseThrow(NotFoundPaymentTypeException::new);
+    }
 }
