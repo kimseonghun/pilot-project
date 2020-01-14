@@ -7,6 +7,7 @@ import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCouponReposit
 import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
+import com.woowabros.pilotproject.domain.order.domain.Order;
 import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,5 +106,22 @@ class IssuedCouponServiceTest {
                 .build());
         verify(memberService, times(1)).findById(anyLong());
         verify(issuedCouponRepository, times(1)).findAllByMember(any());
+    }
+
+    @Test
+    void 해당_주문에서_사용한_쿠폰_리스트_조회() {
+        // given
+        given(issuedCouponRepository.findAllByOrder(any())).willReturn(Collections.singletonList(issuedCoupon));
+
+        // when
+        List<IssuedCouponResponseDto> response = issuedCouponService.findUsedCouponByOrderId(mock(Order.class));
+
+        // then
+        assertThat(response).contains(IssuedCouponResponseDto.builder()
+                .couponCode(issuedCoupon.getCouponCode().getCode())
+                .couponName(issuedCoupon.getCoupon().getName())
+                .couponPrice(issuedCoupon.getCoupon().getPrice())
+                .build());
+        verify(issuedCouponRepository, times(1)).findAllByOrder(any());
     }
 }

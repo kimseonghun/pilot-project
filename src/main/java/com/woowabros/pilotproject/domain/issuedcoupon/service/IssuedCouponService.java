@@ -9,6 +9,7 @@ import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDt
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
+import com.woowabros.pilotproject.domain.order.domain.Order;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -78,6 +79,12 @@ public class IssuedCouponService {
         return issuedCouponRepository.findAllByMember(member).stream()
                 .filter(IssuedCoupon::isIssuableStatus)
                 .filter(issuedCoupon -> issuedCoupon.getCoupon().isUsableDate())
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<IssuedCouponResponseDto> findUsedCouponByOrderId(Order order) {
+        return issuedCouponRepository.findAllByOrder(order).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }

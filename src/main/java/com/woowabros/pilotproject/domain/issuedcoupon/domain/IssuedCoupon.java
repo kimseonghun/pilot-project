@@ -8,6 +8,7 @@ import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponStatus;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotUsableCouponException;
 import com.woowabros.pilotproject.domain.member.domain.Member;
+import com.woowabros.pilotproject.domain.order.domain.Order;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,11 +39,16 @@ public class IssuedCoupon extends BaseTimeEntity {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_member_to_issued_coupon"))
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_order_to_issued_coupon"))
+    private Order order;
+
     @Builder
-    public IssuedCoupon(String couponCode, Coupon coupon, Member member) {
+    public IssuedCoupon(String couponCode, Coupon coupon, Member member, Order order) {
         this.couponCode = CouponCode.of(couponCode);
         this.status = CouponStatus.ISSUABLE;
         this.member = member;
+        this.order = order;
         createCoupon(coupon);
     }
 

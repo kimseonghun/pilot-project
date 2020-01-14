@@ -2,6 +2,7 @@ package com.woowabros.pilotproject.domain.issuedcoupon.domain;
 
 import com.woowabros.pilotproject.domain.issuedcoupon.domain.vo.CouponCode;
 import com.woowabros.pilotproject.domain.member.domain.Member;
+import com.woowabros.pilotproject.domain.order.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface IssuedCouponRepository extends JpaRepository<IssuedCoupon, Long
     Optional<IssuedCoupon> findByCouponCode(CouponCode couponCode);
 
     List<IssuedCoupon> findAllByMember(Member member);
+
+    List<IssuedCoupon> findAllByOrder(Order order);
 }
