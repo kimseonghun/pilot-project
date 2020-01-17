@@ -1,5 +1,7 @@
 package com.woowabros.pilotproject.domain.order.service;
 
+import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
+import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
 import com.woowabros.pilotproject.domain.member.domain.Member;
@@ -12,7 +14,9 @@ import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
 import com.woowabros.pilotproject.domain.order.dto.OrderCreateRequestDto;
 import com.woowabros.pilotproject.domain.order.dto.OrderResponseDto;
+import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import com.woowabros.pilotproject.domain.ordermenu.service.OrderMenuService;
+import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,9 +84,30 @@ class OrderServiceTest {
     void 주문_저장_테스트() {
         // given
         Menu menu = mock(Menu.class);
-        OrderCreateRequestDto dto = mock(OrderCreateRequestDto.class);
+        OrderMenu orderMenu = OrderMenu.builder()
+                .order(order)
+                .menu(menu)
+                .build();
+        Coupon coupon = Coupon.builder()
+                .issuableDate(DateUtil.now())
+                .usableDate(DateUtil.now())
+                .price(3000).build();
+        IssuedCoupon issuedCoupon = IssuedCoupon.builder()
+                .couponCode("1234")
+                .coupon(coupon)
+                .build();
+        List<String> couponCodes = Collections.singletonList("1234");
+        List<Long> menuIds = Collections.singletonList(1L);
+        OrderCreateRequestDto dto = OrderCreateRequestDto.builder()
+                .memberId(1L)
+                .couponCodes(couponCodes)
+                .menuIds(menuIds)
+                .paymentType(PaymentType.SIMPLICITY.getName())
+                .build();
 
         given(memberService.findById(anyLong())).willReturn(member);
+        given(orderMenuService.save(any(), anyLong())).willReturn(orderMenu);
+        given(issuedCouponService.useCoupons(anyString(), any())).willReturn(issuedCoupon);
 
         // when
         Order result = orderService.save(dto);
@@ -92,8 +117,11 @@ class OrderServiceTest {
                 .member(member)
                 .payment(dto.getPaymentType())
                 .totalPrice(menu.getPrice())
+                .totalDiscountPrice(coupon.getPrice())
                 .build());
         verify(memberService, times(1)).findById(anyLong());
+        verify(orderMenuService, times(menuIds.size())).save(any(), anyLong());
+        verify(issuedCouponService, times(couponCodes.size())).useCoupons(anyString(), any());
     }
 
     @Test

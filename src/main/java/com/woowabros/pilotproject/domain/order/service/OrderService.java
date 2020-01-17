@@ -1,5 +1,6 @@
 package com.woowabros.pilotproject.domain.order.service;
 
+import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
@@ -44,10 +45,12 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         order.calculateTotalPrice(orderMenus);
-        orderDto.getCouponCodes()
-                .forEach(couponCode -> issuedCouponService.useCoupons(couponCode, order));
 
-        return order;
+        List<IssuedCoupon> usedCoupons = orderDto.getCouponCodes().stream()
+                .map(couponCode -> issuedCouponService.useCoupons(couponCode, order))
+                .collect(Collectors.toList());
+
+        return order.calculateTotalDiscountPrice(usedCoupons);
     }
 
     public OrderResponseDto findOrderById(Long orderId) {

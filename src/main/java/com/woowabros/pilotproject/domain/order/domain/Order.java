@@ -1,6 +1,7 @@
 package com.woowabros.pilotproject.domain.order.domain;
 
 import com.woowabros.pilotproject.domain.common.domain.BaseTimeEntity;
+import com.woowabros.pilotproject.domain.issuedcoupon.domain.IssuedCoupon;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.order.domain.converter.OrderStatusAttributeConverter;
 import com.woowabros.pilotproject.domain.order.domain.converter.PaymentTypeAttributeConverter;
@@ -27,6 +28,9 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer totalPrice;
 
+    @Column(nullable = false)
+    private Integer totalDiscountPrice;
+
     @Convert(converter = OrderStatusAttributeConverter.class)
     private OrderStatus status;
 
@@ -38,8 +42,9 @@ public class Order extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public Order(Integer totalPrice, PaymentType payment, Member member) {
+    public Order(Integer totalPrice, Integer totalDiscountPrice, PaymentType payment, Member member) {
         this.totalPrice = totalPrice;
+        this.totalDiscountPrice = totalDiscountPrice;
         this.payment = payment;
         this.member = member;
         this.status = OrderStatus.COMPLETED;
@@ -48,6 +53,14 @@ public class Order extends BaseTimeEntity {
     public Order calculateTotalPrice(List<OrderMenu> orderMenus) {
         this.totalPrice = orderMenus.stream()
                 .map(orderMenu -> orderMenu.getMenu().getPrice())
+                .reduce(0, Integer::sum);
+
+        return this;
+    }
+
+    public Order calculateTotalDiscountPrice(List<IssuedCoupon> usedCoupons) {
+        this.totalDiscountPrice = usedCoupons.stream()
+                .map(issuedCoupon -> issuedCoupon.getCoupon().getPrice())
                 .reduce(0, Integer::sum);
 
         return this;
