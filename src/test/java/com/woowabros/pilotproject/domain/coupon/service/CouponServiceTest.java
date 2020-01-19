@@ -53,6 +53,8 @@ class CouponServiceTest {
                 .build();
 
         couponResponseDto = CouponResponseDto.builder()
+                .id(coupon.getId())
+                .name(coupon.getName())
                 .issuableDate(coupon.getIssuableDate())
                 .usableDate(coupon.getUsableDate())
                 .price(coupon.getPrice())

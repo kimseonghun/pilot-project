@@ -1,0 +1,63 @@
+= Pilot Project Spring REST Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+== 소개
+
+파일럿 프로젝트 Spring Rest Docs
+
+회원마케팅팀 김성훈
+
+== Member API
+
+=== save()
+
+.request
+include::{snippets}/member/save/http-request.adoc[]
+
+.request parameters
+include::{snippets}/member/save/request-parameters.adoc[]
+
+== Coupon API
+
+=== create()
+
+.request
+include::{snippets}/coupon/create/http-request.adoc[]
+
+.request fields
+include::{snippets}/coupon/create/request-fields.adoc[]
+
+.response
+include::{snippets}/coupon/create/http-response.adoc[]
+
+=== findById()
+
+.request
+include::{snippets}/coupon/findById/http-request.adoc[]
+
+.path variable
+include::{snippets}/coupon/findById/path-parameters.adoc[]
+
+.response
+include::{snippets}/coupon/findById/http-response.adoc[]
+
+.response fields
+include::{snippets}/coupon/findById/response-fields.adoc[]
+
+=== findByPageable()
+
+include::{snippets}/coupon/findByPageable/http-request.adoc[]
+
+.path variable
+include::{snippets}/coupon/findByPageable/request-body.adoc[]
+
+.response
+include::{snippets}/coupon/findByPageable/http-response.adoc[]
+
+.response fields
+include::{snippets}/coupon/findByPageable/response-fields.adoc[]

@@ -34,11 +34,7 @@ public class CouponService {
     public CouponResponseDto findById(Long id) {
         Coupon coupon = couponInnerService.findById(id);
 
-        return CouponResponseDto.builder()
-                .issuableDate(coupon.getIssuableDate())
-                .usableDate(coupon.getUsableDate())
-                .price(coupon.getPrice())
-                .build();
+        return dto(coupon);
     }
 
     public List<CouponResponseDto> findAllByPageable(Pageable pageable) {
@@ -57,6 +53,7 @@ public class CouponService {
     private CouponResponseDto dto(Coupon coupon) {
         return CouponResponseDto.builder()
                 .id(coupon.getId())
+                .name(coupon.getName())
                 .issuableDate(coupon.getIssuableDate())
                 .usableDate(coupon.getUsableDate())
                 .price(coupon.getPrice())
