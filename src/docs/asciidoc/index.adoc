@@ -10,7 +10,7 @@
 
 파일럿 프로젝트 Spring Rest Docs
 
-주문마케팅회원서비스팀 김성훈
+회원마케팅팀 김성훈
 
 == Member API
 
@@ -22,3 +22,15 @@ include::{snippets}/member/save/http-request.adoc[]
 .request parameters
 include::{snippets}/member/save/request-parameters.adoc[]
 
+== Coupon API
+
+=== create()
+
+.request
+include::{snippets}/coupon/create/http-request.adoc[]
+
+.request fields
+include::{snippets}/coupon/create/request-fields.adoc[]
+
+.response
+include::{snippets}/coupon/create/http-response.adoc[]

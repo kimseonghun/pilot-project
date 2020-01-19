@@ -7,8 +7,8 @@ import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCoupo
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,10 +26,10 @@ public class Coupon extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private Date issuableDate;
+    private LocalDateTime issuableDate;
 
     @Column(nullable = false)
-    private Date usableDate;
+    private LocalDateTime usableDate;
 
     @Column(nullable = false)
     private Integer price;
@@ -41,8 +41,8 @@ public class Coupon extends BaseTimeEntity {
     private List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
     @Builder
-    public Coupon(String name, Date issuableDate, Date usableDate, int price, int amount) {
-        if (issuableDate.after(usableDate)) {
+    public Coupon(String name, LocalDateTime issuableDate, LocalDateTime usableDate, int price, int amount) {
+        if (issuableDate.isAfter(usableDate)) {
             throw new CannotCreateCouponException();
         }
 
@@ -54,11 +54,11 @@ public class Coupon extends BaseTimeEntity {
     }
 
     public boolean isIssuableDate() {
-        return new Date().before(issuableDate) && this.amount > EXHAUSTED_COUPON_AMOUNT;
+        return LocalDateTime.now().isBefore(issuableDate) && this.amount > EXHAUSTED_COUPON_AMOUNT;
     }
 
     public boolean isUsableDate() {
-        return new Date().before(usableDate);
+        return LocalDateTime.now().isBefore(usableDate);
     }
 
     public Integer subtractAmount() {

@@ -3,7 +3,6 @@ package com.woowabros.pilotproject.domain.coupon.service;
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,8 +46,8 @@ class CouponServiceTest {
     void setUp() {
         coupon = Coupon.builder()
                 .name("주마회가 쏜다")
-                .issuableDate(DateUtil.tomorrow())
-                .usableDate(DateUtil.tomorrow())
+                .issuableDate(LocalDateTime.now().plusDays(1))
+                .usableDate(LocalDateTime.now().plusDays(1))
                 .price(1000)
                 .amount(10)
                 .build();

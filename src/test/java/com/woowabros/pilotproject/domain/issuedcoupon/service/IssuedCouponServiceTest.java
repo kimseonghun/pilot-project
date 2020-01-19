@@ -8,7 +8,6 @@ import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDt
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
 import com.woowabros.pilotproject.domain.order.domain.Order;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +47,8 @@ class IssuedCouponServiceTest {
     void setUp() {
         coupon = Coupon.builder()
                 .name("주마회가 쏜다")
-                .issuableDate(DateUtil.tomorrow())
-                .usableDate(DateUtil.tomorrow())
+                .issuableDate(LocalDateTime.now().plusDays(1))
+                .usableDate(LocalDateTime.now().plusDays(1))
                 .price(3000)
                 .amount(10)
                 .build();

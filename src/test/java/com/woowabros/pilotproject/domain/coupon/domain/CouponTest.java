@@ -2,11 +2,10 @@ package com.woowabros.pilotproject.domain.coupon.domain;
 
 import com.woowabros.pilotproject.domain.coupon.exception.CannotCreateCouponException;
 import com.woowabros.pilotproject.domain.issuedcoupon.exception.NotIssuableCouponException;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,8 +17,8 @@ class CouponTest {
     void setUp() {
         coupon = Coupon.builder()
                 .name("주마회가 쏜다")
-                .issuableDate(DateUtil.tomorrow())
-                .usableDate(DateUtil.tomorrow())
+                .issuableDate(LocalDateTime.now().plusDays(1))
+                .usableDate(LocalDateTime.now().plusDays(1))
                 .price(1000)
                 .amount(1)
                 .build();
@@ -28,8 +27,8 @@ class CouponTest {
     @Test
     void 발급가능날짜가_사용가능날짜보다_이후인_경우_쿠폰_생성_예외_테스트() {
         // given
-        Date issuableDate = DateUtil.tomorrow();
-        Date usableDate = DateUtil.yesterday();
+        LocalDateTime issuableDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime usableDate = LocalDateTime.now().minusDays(1);
 
         // when & then
         assertThrows(CannotCreateCouponException.class, () -> Coupon.builder()
@@ -61,8 +60,8 @@ class CouponTest {
         // given
         Coupon coupon = Coupon.builder()
                 .name("주마회가 쏜다")
-                .issuableDate(DateUtil.tomorrow())
-                .usableDate(DateUtil.tomorrow())
+                .issuableDate(LocalDateTime.now().plusDays(1))
+                .usableDate(LocalDateTime.now().plusDays(1))
                 .price(1000)
                 .amount(0)
                 .build();

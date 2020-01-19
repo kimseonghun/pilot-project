@@ -1,8 +1,9 @@
 package com.woowabros.pilotproject.domain.coupon.dto;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -10,12 +11,17 @@ import java.util.Date;
 @EqualsAndHashCode
 public class CouponResponseDto {
     private Long id;
-    private Date issuableDate;
-    private Date usableDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime issuableDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime usableDate;
+
     private Integer price;
 
     @Builder
-    public CouponResponseDto(Long id, Date issuableDate, Date usableDate, Integer price) {
+    public CouponResponseDto(Long id, LocalDateTime issuableDate, LocalDateTime usableDate, Integer price) {
         this.id = id;
         this.issuableDate = issuableDate;
         this.usableDate = usableDate;

@@ -3,7 +3,6 @@ package com.woowabros.pilotproject.domain.coupon.service;
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
 import com.woowabros.pilotproject.domain.coupon.domain.CouponRepository;
 import com.woowabros.pilotproject.domain.coupon.exception.NotFoundCouponException;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +72,8 @@ class CouponInnerServiceTest {
     void 현재_사용가능한_쿠폰_조회_테스트() {
         // given
         Coupon coupon = Coupon.builder()
-                .issuableDate(DateUtil.now())
-                .usableDate(DateUtil.tomorrow())
+                .issuableDate(LocalDateTime.now())
+                .usableDate(LocalDateTime.now().plusDays(1))
                 .build();
         given(couponRepository.findById(anyLong())).willReturn(Optional.of(coupon));
 
@@ -86,8 +86,8 @@ class CouponInnerServiceTest {
     void 현재_사용할_수_없는_쿠폰_조회_시_예외_테스트() {
         // given
         Coupon coupon = Coupon.builder()
-                .issuableDate(DateUtil.yesterday())
-                .usableDate(DateUtil.yesterday())
+                .issuableDate(LocalDateTime.now().minusDays(1))
+                .usableDate(LocalDateTime.now().minusDays(1))
                 .build();
         given(couponRepository.findById(anyLong())).willReturn(Optional.of(coupon));
 

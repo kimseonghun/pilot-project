@@ -8,10 +8,10 @@ import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
 import com.woowabros.pilotproject.domain.order.exception.CannotCancelOrderException;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,8 +59,8 @@ class OrderTest {
     void 총_할인_금액_계산_테스트() {
         // given
         Coupon coupon = Coupon.builder()
-                .issuableDate(DateUtil.now())
-                .usableDate(DateUtil.now())
+                .issuableDate(LocalDateTime.now())
+                .usableDate(LocalDateTime.now())
                 .price(3000).build();
         IssuedCoupon issuedCoupon1 = IssuedCoupon.builder()
                 .couponCode("1234")

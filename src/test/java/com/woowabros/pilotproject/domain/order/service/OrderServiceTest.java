@@ -16,7 +16,6 @@ import com.woowabros.pilotproject.domain.order.dto.OrderCreateRequestDto;
 import com.woowabros.pilotproject.domain.order.dto.OrderResponseDto;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import com.woowabros.pilotproject.domain.ordermenu.service.OrderMenuService;
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -89,8 +89,8 @@ class OrderServiceTest {
                 .menu(menu)
                 .build();
         Coupon coupon = Coupon.builder()
-                .issuableDate(DateUtil.now())
-                .usableDate(DateUtil.now())
+                .issuableDate(LocalDateTime.now())
+                .usableDate(LocalDateTime.now())
                 .price(3000).build();
         IssuedCoupon issuedCoupon = IssuedCoupon.builder()
                 .couponCode("1234")
