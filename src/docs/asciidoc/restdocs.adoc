@@ -51,6 +51,7 @@ include::{snippets}/coupon/findById/response-fields.adoc[]
 
 === findByPageable()
 
+.request
 include::{snippets}/coupon/findByPageable/http-request.adoc[]
 
 .path variable
@@ -61,3 +62,14 @@ include::{snippets}/coupon/findByPageable/http-response.adoc[]
 
 .response fields
 include::{snippets}/coupon/findByPageable/response-fields.adoc[]
+
+=== findIssualbeCoupons()
+
+.request
+include::{snippets}/coupon/findIssuableCoupons/http-request.adoc[]
+
+.response
+include::{snippets}/coupon/findIssuableCoupons/http-response.adoc[]
+
+.response fields
+include::{snippets}/coupon/findIssuableCoupons/response-fields.adoc[]

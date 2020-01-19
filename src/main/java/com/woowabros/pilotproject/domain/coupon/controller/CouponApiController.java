@@ -35,4 +35,10 @@ public class CouponApiController {
         List<CouponResponseDto> response = couponService.findAllByPageable(pageable);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/issuable")
+    public ResponseEntity<List<CouponResponseDto>> findIssuableCoupons() {
+        List<CouponResponseDto> response = couponService.findIssuableCoupons();
+        return ResponseEntity.ok(response);
+    }
 }

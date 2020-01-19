@@ -38,7 +38,7 @@ class CouponApiControllerTest extends BaseControllerTest {
             .build();
 
     @Test
-    void 쿠폰_생성_테스트() throws Exception {
+    void 어드민_쿠폰_생성_테스트() throws Exception {
         // given
         CouponCreateRequestDto dto = CouponCreateRequestDto.builder()
                 .name("페리카나 쿠폰")
@@ -69,7 +69,7 @@ class CouponApiControllerTest extends BaseControllerTest {
     }
 
     @Test
-    void 쿠폰_단건_조회_테스트() throws Exception {
+    void 어드민_쿠폰_단건_조회_테스트() throws Exception {
         // when
         ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get(COUPON_URI + "/{couponId}", 1L)).andDo(print());
 
@@ -95,7 +95,7 @@ class CouponApiControllerTest extends BaseControllerTest {
     }
 
     @Test
-    void 쿠폰_다건_조회_테스트() throws Exception {
+    void 어드민_쿠폰_다건_조회_테스트() throws Exception {
         // given
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -127,6 +127,32 @@ class CouponApiControllerTest extends BaseControllerTest {
                         fieldWithPath("sort.sorted").type(JsonFieldType.BOOLEAN).ignored(),
                         fieldWithPath("sort.empty").type(JsonFieldType.BOOLEAN).ignored()
                 ),
+                responseFields(
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("쿠폰 고유 번호"),
+                        fieldWithPath("[].name").type(JsonFieldType.STRING).description("쿠폰 이름"),
+                        fieldWithPath("[].issuableDate").type(JsonFieldType.VARIES).description("쿠폰 발급 가능 날짜"),
+                        fieldWithPath("[].usableDate").type(JsonFieldType.VARIES).description("쿠폰 사용 가능 날짜"),
+                        fieldWithPath("[].price").type(JsonFieldType.NUMBER).description("쿠폰 할인 금액")
+                )));
+    }
+
+    @Test
+    void 발급할_수_있는_쿠폰_조회_테스트() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get(COUPON_URI + "/issuable")).andDo(print());
+
+        // then
+        String response = result.andExpect(status().isOk())
+                .andExpect(handler().handlerType(CouponApiController.class))
+                .andExpect(handler().methodName("findIssuableCoupons"))
+                .andReturn().getResponse().getContentAsString();
+
+        List<CouponResponseDto> couponResponseDtos = OBJECT_MAPPER.readValue(response, new TypeReference<List<CouponResponseDto>>() {
+        });
+
+        assertThat(couponResponseDtos).contains(couponResponseDto);
+
+        result.andDo(document("coupon/findIssuableCoupons",
                 responseFields(
                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("쿠폰 고유 번호"),
                         fieldWithPath("[].name").type(JsonFieldType.STRING).description("쿠폰 이름"),
