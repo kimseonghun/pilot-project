@@ -32,6 +32,7 @@ public class BaseControllerTest {
             .build();
 
     protected WebTestClient webTestClient;
+    protected String cookie;
 
     @LocalServerPort
     private Integer port;
@@ -46,6 +47,8 @@ public class BaseControllerTest {
                         .withResponseDefaults(prettyPrint()))
                 .responseTimeout(Duration.ofMillis(15000))
                 .build();
+
+        this.cookie = getCookie();
     }
 
     protected static String getUrl(Class<?> clazz) {
@@ -59,6 +62,14 @@ public class BaseControllerTest {
                 .body(BodyInserters.fromFormData("memberName", LOGIN_NAME)
                         .with("password", LOGIN_PASSWORD))
                 .exchange();
+    }
+
+    private String getCookie() {
+        return login()
+                .expectStatus().isOk()
+                .returnResult(String.class)
+                .getResponseHeaders()
+                .getFirst("Set-Cookie");
     }
 }
 

@@ -22,8 +22,8 @@ class CouponApiControllerTest extends BaseControllerTest {
     private CouponResponseDto couponResponseDto = CouponResponseDto.builder()
             .id(1L)
             .name("페리카나 3000원 쿠폰")
-            .issuableDate(LocalDateTime.parse("2021-07-12T22:47:34.158"))
-            .usableDate(LocalDateTime.parse("2022-07-12T22:47:34.158"))
+            .issuableDate(LocalDateTime.parse("2021-07-12T22:47:34"))
+            .usableDate(LocalDateTime.parse("2022-07-12T22:47:34"))
             .price(3000)
             .build();
 

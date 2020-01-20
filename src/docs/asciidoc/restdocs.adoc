@@ -22,6 +22,20 @@ include::{snippets}/member/save/http-request.adoc[]
 .request parameters
 include::{snippets}/member/save/request-parameters.adoc[]
 
+.response
+include::{snippets}/member/save/http-response.adoc[]
+
+=== login()
+
+.request
+include::{snippets}/member/login/http-request.adoc[]
+
+.request parameters
+include::{snippets}/member/login/request-parameters.adoc[]
+
+.response
+include::{snippets}/member/login/http-response.adoc[]
+
 == Coupon API
 
 === create()
@@ -54,16 +68,13 @@ include::{snippets}/coupon/findById/response-fields.adoc[]
 .request
 include::{snippets}/coupon/findByPageable/http-request.adoc[]
 
-.path variable
-include::{snippets}/coupon/findByPageable/request-body.adoc[]
-
 .response
 include::{snippets}/coupon/findByPageable/http-response.adoc[]
 
 .response fields
 include::{snippets}/coupon/findByPageable/response-fields.adoc[]
 
-=== findIssualbeCoupons()
+=== findIssuableCoupons()
 
 .request
 include::{snippets}/coupon/findIssuableCoupons/http-request.adoc[]
@@ -73,3 +84,29 @@ include::{snippets}/coupon/findIssuableCoupons/http-response.adoc[]
 
 .response fields
 include::{snippets}/coupon/findIssuableCoupons/response-fields.adoc[]
+
+== IssuedCoupon API
+
+=== findUsableCouponsByMemberId()
+
+.request
+include::{snippets}/issuedCoupon/findUsableCouponsByMemberId/http-request.adoc[]
+
+.response
+include::{snippets}/issuedCoupon/findUsableCouponsByMemberId/http-response.adoc[]
+
+.response fields
+include::{snippets}/issuedCoupon/findUsableCouponsByMemberId/response-fields.adoc[]
+
+=== issue()
+
+.request
+include::{snippets}/issuedCoupon/issue/http-request.adoc[]
+
+.path parameters
+include::{snippets}/issuedCoupon/issue/path-parameters.adoc[]
+
+.response
+include::{snippets}/issuedCoupon/issue/http-response.adoc[]
+
+

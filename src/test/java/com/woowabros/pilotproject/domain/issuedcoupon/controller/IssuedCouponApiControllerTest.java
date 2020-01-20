@@ -3,9 +3,15 @@ package com.woowabros.pilotproject.domain.issuedcoupon.controller;
 import com.woowabros.pilotproject.BaseControllerTest;
 import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.springframework.http.HttpHeaders.COOKIE;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 
 class IssuedCouponApiControllerTest extends BaseControllerTest {
     private static final String ISSUED_COUPON_URI = getUrl(IssuedCouponApiController.class);
@@ -17,17 +23,8 @@ class IssuedCouponApiControllerTest extends BaseControllerTest {
             .build();
 
     @Test
-    void 사용가능한_쿠폰_조회_테스트() throws Exception {
-        // given
-        String cookie = login()
-                .expectStatus().isOk()
-                .returnResult(String.class)
-                .getResponseHeaders()
-                .getFirst("Set-Cookie");
-
-
+    void 사용가능한_쿠폰_조회_테스트() {
         // when
-//        ResultActions result = mockMvc.perform(get(ISSUED_COUPON_URI + "/usable").header(COOKIE, cookie)).andDo(print());
         WebTestClient.ResponseSpec result = webTestClient.get()
                 .uri(ISSUED_COUPON_URI + "/usable")
                 .header(COOKIE, cookie)
@@ -35,15 +32,29 @@ class IssuedCouponApiControllerTest extends BaseControllerTest {
 
         // then
         result.expectStatus().isOk()
-                .expectBodyList(IssuedCouponResponseDto.class).contains(dto);
-//        String response = result.andExpect(status().isOk())
-//                .andExpect(handler().handlerType(IssuedCouponApiController.class))
-//                .andExpect(handler().methodName("findUsableCouponsByMemberId"))
-//                .andReturn().getResponse().getContentAsString();
-//
-//        List<IssuedCouponResponseDto> issuedCouponResponseDtos = OBJECT_MAPPER.readValue(response, new TypeReference<List<IssuedCouponResponseDto>>() {
-//        });
-//
-//        assertThat(issuedCouponResponseDtos).contains(dto);
+                .expectBodyList(IssuedCouponResponseDto.class).contains(dto)
+                .consumeWith(document("issuedCoupon/findUsableCouponsByMemberId",
+                        responseFields(
+                                fieldWithPath("[].couponCode").type(JsonFieldType.STRING).description("쿠폰 고유 코드"),
+                                fieldWithPath("[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름"),
+                                fieldWithPath("[].couponPrice").type(JsonFieldType.NUMBER).description("쿠폰 할인 금액")
+                        )));
+    }
+
+    @Test
+    void 쿠폰_발급_테스트() {
+        // when
+        WebTestClient.ResponseSpec result = webTestClient.get()
+                .uri(ISSUED_COUPON_URI + "/{couponId}", 2L)
+                .header(COOKIE, cookie)
+                .exchange();
+
+        // then
+        result.expectStatus().isOk()
+                .expectBody()
+                .consumeWith(document("issuedCoupon/issue",
+                        pathParameters(
+                                parameterWithName("couponId").description("발급받을 쿠폰의 고유 번호")
+                        )));
     }
 }
