@@ -134,3 +134,14 @@ include::{snippets}/order/create/request-fields.adoc[]
 
 .response
 include::{snippets}/order/create/http-response.adoc[]
+
+=== cancel()
+
+.request
+include::{snippets}/order/cancel/http-request.adoc[]
+
+.path parameters
+include::{snippets}/order/cancel/path-parameters.adoc[]
+
+.response
+include::{snippets}/order/cancel/http-response.adoc[]

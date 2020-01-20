@@ -67,10 +67,11 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public Order cancel(Long orderId) {
+    public Order cancel(Long orderId, Long memberId) {
+        Member member = memberService.findById(memberId);
         Order order = orderRepository.findById(orderId).orElseThrow(NotFoundOrderException::new);
 
-        return order.cancel();
+        return order.cancel(member);
     }
 
     private OrderResponseDto toDto(Order order) {

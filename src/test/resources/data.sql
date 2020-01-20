@@ -21,3 +21,6 @@ values (3, '9876', 2, 3, 1, null);
 insert into menu(id, name, price) values (1, 'chicken', 20000);
 insert into menu(id, name, price) values (2, 'pizza', 34000);
 insert into menu(id, name, price) values (3, 'hamburger', 15000);
+
+insert into orders(id, total_price, total_discount_price, payment, status, member_id)
+values (1, 35000, 5000, 1, 1, 1);

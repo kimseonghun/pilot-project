@@ -66,9 +66,13 @@ public class Order extends BaseTimeEntity {
         return this;
     }
 
-    public Order cancel() {
+    public Order cancel(Member member) {
         if (OrderStatus.CANCEL.equals(this.status)) {
-            throw new CannotCancelOrderException();
+            throw new CannotCancelOrderException("이미 취소된 주문입니다.");
+        }
+
+        if (!this.member.equals(member)) {
+            throw new CannotCancelOrderException("주문한 본인만이 취소할 수 있습니다.");
         }
 
         this.status = OrderStatus.CANCEL;

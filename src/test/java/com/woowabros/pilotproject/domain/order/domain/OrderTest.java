@@ -21,12 +21,15 @@ import static org.mockito.Mockito.mock;
 
 class OrderTest {
     private Order order;
+    private Member member;
 
     @BeforeEach
     void setUp() {
+        member = mock(Member.class);
+
         order = Order.builder()
                 .payment(PaymentType.CARD)
-                .member(mock(Member.class))
+                .member(member)
                 .build();
     }
 
@@ -83,7 +86,7 @@ class OrderTest {
     @Test
     void 주문_취소_테스트() {
         // when
-        Order result = order.cancel();
+        Order result = order.cancel(member);
 
         // then
         assertThat(result.getStatus()).isEqualTo(OrderStatus.CANCEL);
@@ -92,9 +95,9 @@ class OrderTest {
     @Test
     void 주문_취소_시_이미_취소된_경우_예외_테스트() {
         // given
-        Order canceledOrder = order.cancel();
+        Order canceledOrder = order.cancel(member);
 
         // when & then
-        assertThrows(CannotCancelOrderException.class, canceledOrder::cancel);
+        assertThrows(CannotCancelOrderException.class, () -> canceledOrder.cancel(member));
     }
 }

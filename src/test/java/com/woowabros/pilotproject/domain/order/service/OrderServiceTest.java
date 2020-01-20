@@ -166,10 +166,11 @@ class OrderServiceTest {
     @Test
     void 주문_취소_테스트() {
         // given
+        given(memberService.findById(anyLong())).willReturn(member);
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        Order result = orderService.cancel(1L);
+        Order result = orderService.cancel(1L, 1L);
 
         // then
         assertThat(result.getStatus()).isEqualTo(OrderStatus.CANCEL);
