@@ -8,6 +8,7 @@ import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenuRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class OrderMenuService {
         this.menuService = menuService;
     }
 
+    @Transactional
     public OrderMenu save(Order order, Long menuId) {
         Menu menu = menuService.findById(menuId);
         OrderMenu orderMenu = OrderMenu.builder()

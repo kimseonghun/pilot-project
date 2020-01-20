@@ -99,18 +99,21 @@ class OrderServiceTest {
         List<String> couponCodes = Collections.singletonList("1234");
         List<Long> menuIds = Collections.singletonList(1L);
         OrderCreateRequestDto dto = OrderCreateRequestDto.builder()
-                .memberId(1L)
                 .couponCodes(couponCodes)
                 .menuIds(menuIds)
                 .paymentType(PaymentType.SIMPLICITY.getName())
                 .build();
 
+        given(orderRepository.save(any())).willReturn(Order.builder()
+                .payment(PaymentType.SIMPLICITY)
+                .member(member)
+                .build());
         given(memberService.findById(anyLong())).willReturn(member);
         given(orderMenuService.save(any(), anyLong())).willReturn(orderMenu);
         given(issuedCouponService.useCoupons(anyString(), any())).willReturn(issuedCoupon);
 
         // when
-        Order result = orderService.save(dto);
+        Order result = orderService.create(dto, 1L);
 
         // then
         assertThat(result).isEqualTo(Order.builder()

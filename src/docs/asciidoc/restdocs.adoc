@@ -121,3 +121,16 @@ include::{snippets}/menu/findAll/http-response.adoc[]
 
 .response fields
 include::{snippets}/menu/findAll/response-fields.adoc[]
+
+== Order API
+
+=== create()
+
+.request
+include::{snippets}/order/create/http-request.adoc[]
+
+.request fields
+include::{snippets}/order/create/request-fields.adoc[]
+
+.response
+include::{snippets}/order/create/http-response.adoc[]

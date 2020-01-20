@@ -18,11 +18,11 @@ public class OrderMenu extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_orders_to_order_menu"))
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_orders_to_order_menu"))
     private Order order;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_menu_to_order_menu"))
+    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_menu_to_order_menu"))
     private Menu menu;
 
     @Builder

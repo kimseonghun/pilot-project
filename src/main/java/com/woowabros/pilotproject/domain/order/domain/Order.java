@@ -25,10 +25,10 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private Integer totalPrice;
 
-    @Column(nullable = false)
+    @Column
     private Integer totalDiscountPrice;
 
     @Convert(converter = OrderStatusAttributeConverter.class)
@@ -38,7 +38,7 @@ public class Order extends BaseTimeEntity {
     private PaymentType payment;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_member_to_orders"))
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_member_to_orders"))
     private Member member;
 
     @Builder

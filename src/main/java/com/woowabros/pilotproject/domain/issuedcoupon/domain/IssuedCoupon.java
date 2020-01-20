@@ -40,7 +40,7 @@ public class IssuedCoupon extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_order_to_issued_coupon"))
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_to_issued_coupon"))
     private Order order;
 
     @Builder

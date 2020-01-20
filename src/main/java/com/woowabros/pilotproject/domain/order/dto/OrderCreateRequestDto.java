@@ -10,14 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class OrderCreateRequestDto {
-    private Long memberId;
     private List<Long> menuIds;
     private PaymentType paymentType;
     private List<String> couponCodes;
 
     @Builder
-    public OrderCreateRequestDto(Long memberId, List<Long> menuIds, String paymentType, List<String> couponCodes) {
-        this.memberId = memberId;
+    public OrderCreateRequestDto(List<Long> menuIds, String paymentType, List<String> couponCodes) {
         this.menuIds = menuIds;
         this.paymentType = PaymentType.ofName(paymentType);
         this.couponCodes = couponCodes;

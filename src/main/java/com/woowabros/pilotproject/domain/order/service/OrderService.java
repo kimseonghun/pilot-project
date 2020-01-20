@@ -32,13 +32,13 @@ public class OrderService {
     }
 
     @Transactional
-    public Order save(OrderCreateRequestDto orderDto) {
-        Member member = memberService.findById(orderDto.getMemberId());
+    public Order create(OrderCreateRequestDto orderDto, Long memberId) {
+        Member member = memberService.findById(memberId);
 
-        Order order = Order.builder()
+        Order order = orderRepository.save(Order.builder()
                 .payment(orderDto.getPaymentType())
                 .member(member)
-                .build();
+                .build());
 
         List<OrderMenu> orderMenus = orderDto.getMenuIds().stream()
                 .map(menuId -> orderMenuService.save(order, menuId))
