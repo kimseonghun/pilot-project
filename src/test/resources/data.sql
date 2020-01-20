@@ -12,3 +12,4 @@ values (1, '1234', 2, 1, 1);
 insert into issued_coupon(id, coupon_code, status, coupon_id, member_id)
 values (2, '4321', 1, 2, null);
 
+insert into menu(id, name, price) values (1, 'chicken', 20000);

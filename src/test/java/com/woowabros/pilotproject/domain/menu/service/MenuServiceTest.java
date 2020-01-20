@@ -2,6 +2,7 @@ package com.woowabros.pilotproject.domain.menu.service;
 
 import com.woowabros.pilotproject.domain.menu.domain.Menu;
 import com.woowabros.pilotproject.domain.menu.domain.MenuRepository;
+import com.woowabros.pilotproject.domain.menu.dto.MenuResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MenuServiceTest {
@@ -29,10 +31,20 @@ class MenuServiceTest {
     private MenuRepository menuRepository;
 
     private Menu menu;
+    private MenuResponseDto menuResponseDto;
 
     @BeforeEach
     void setUp() {
-        menu = mock(Menu.class);
+        menu = Menu.builder()
+                .name("chicken")
+                .price(20000)
+                .build();
+
+        menuResponseDto = MenuResponseDto.builder()
+                .menuId(menu.getId())
+                .menuName(menu.getName())
+                .menuPrice(menu.getPrice())
+                .build();
     }
 
     @Test
@@ -55,9 +67,7 @@ class MenuServiceTest {
         given(menuRepository.findAll()).willReturn(menus);
 
         // when & then
-        assertThat(menuService.findAll())
-                .contains(menu)
-                .isEqualTo(menus);
+        assertThat(menuService.findAll()).contains(menuResponseDto);
         verify(menuRepository, times(1)).findAll();
     }
 

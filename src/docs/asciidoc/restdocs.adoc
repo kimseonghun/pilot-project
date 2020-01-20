@@ -109,4 +109,15 @@ include::{snippets}/issuedCoupon/issue/path-parameters.adoc[]
 .response
 include::{snippets}/issuedCoupon/issue/http-response.adoc[]
 
+== Menu API
 
+=== findAll()
+
+.request
+include::{snippets}/menu/findAll/http-request.adoc[]
+
+.response
+include::{snippets}/menu/findAll/http-response.adoc[]
+
+.response fields
+include::{snippets}/menu/findAll/response-fields.adoc[]
