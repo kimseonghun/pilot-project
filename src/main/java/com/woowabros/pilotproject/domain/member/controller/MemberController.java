@@ -1,5 +1,6 @@
 package com.woowabros.pilotproject.domain.member.controller;
 
+import com.woowabros.pilotproject.config.resolver.SessionMember;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.dto.MemberCreateDto;
 import com.woowabros.pilotproject.domain.member.dto.MemberLoginDto;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static com.woowabros.pilotproject.config.resolver.SessionMemberArgumentResolver.SESSION_MEMBER;
 
 @Controller
 @RequestMapping("/member")
@@ -37,7 +40,10 @@ public class MemberController {
     @PostMapping("/login")
     public String login(MemberLoginDto member, HttpSession session) {
         Member loginedMember = memberService.login(member.toEntity());
-        session.setAttribute("member", loginedMember);
+        session.setAttribute(SESSION_MEMBER, SessionMember.builder()
+                .memberId(loginedMember.getId())
+                .memberName(loginedMember.getMemberName())
+                .build());
         return "index";
     }
 }

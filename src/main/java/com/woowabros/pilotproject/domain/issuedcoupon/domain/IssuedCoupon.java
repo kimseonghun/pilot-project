@@ -25,18 +25,18 @@ public class IssuedCoupon extends BaseTimeEntity {
 
     @AttributeOverride(
             name = "code",
-            column = @Column(unique = true, nullable = false))
+            column = @Column(name = "coupon_code", unique = true, nullable = false))
     private CouponCode couponCode;
 
     @Convert(converter = CouponStatusAttributeConverter.class)
     private CouponStatus status;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_coupon_to_issued_coupon"))
+    @JoinColumn(name = "coupon_id", foreignKey = @ForeignKey(name = "fk_coupon_to_issued_coupon"))
     private Coupon coupon;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_member_to_issued_coupon"))
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_member_to_issued_coupon"))
     private Member member;
 
     @ManyToOne
@@ -61,6 +61,10 @@ public class IssuedCoupon extends BaseTimeEntity {
         return CouponStatus.ISSUABLE.equals(this.status);
     }
 
+    public boolean isUsableStatus() {
+        return CouponStatus.USABLE.equals(this.status);
+    }
+
     public IssuedCoupon issueTo(Member member) {
         if (!isIssuableStatus()) {
             throw new NotIssuableCouponException();
@@ -73,7 +77,7 @@ public class IssuedCoupon extends BaseTimeEntity {
     }
 
     public IssuedCoupon use(Order order) {
-        if (!CouponStatus.USABLE.equals(this.status)) {
+        if (!isUsableStatus()) {
             throw new NotUsableCouponException();
         }
 

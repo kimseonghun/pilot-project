@@ -93,7 +93,9 @@ class IssuedCouponServiceTest {
     @Test
     void 주문_시_사용가능_쿠폰_조회_테스트() {
         // given
-        given(memberService.findById(anyLong())).willReturn(mock(Member.class));
+        Member member = mock(Member.class);
+        issuedCoupon.issueTo(member);
+        given(memberService.findById(anyLong())).willReturn(member);
         given(issuedCouponRepository.findAllByMember(any())).willReturn(Collections.singletonList(issuedCoupon));
 
         // when

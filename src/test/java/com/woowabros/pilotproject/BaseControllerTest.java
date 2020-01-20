@@ -6,43 +6,45 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
+
+import java.time.Duration;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 
 @ExtendWith({RestDocumentationExtension.class})
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BaseControllerTest {
     protected static final String LOGIN_NAME = "loginName";
     protected static final String LOGIN_PASSWORD = "loginPassword";
+    private static final String LOCALHOST = "http://localhost:";
     protected static final ObjectMapper OBJECT_MAPPER = Jackson2ObjectMapperBuilder.json()
             .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .modules(new JavaTimeModule())
             .build();
 
-    protected MockMvc mockMvc;
+    protected WebTestClient webTestClient;
+
+    @LocalServerPort
+    private Integer port;
 
     @BeforeEach
-    protected void setUp(WebApplicationContext webApplicationContext,
-                         RestDocumentationContextProvider restDocumentation) {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilter(new CharacterEncodingFilter("UTF-8", true))
-                .apply(documentationConfiguration(restDocumentation)
+    protected void setUp(RestDocumentationContextProvider restDocumentation) {
+        this.webTestClient = WebTestClient.bindToServer()
+                .baseUrl(LOCALHOST + port)
+                .filter(documentationConfiguration(restDocumentation)
                         .operationPreprocessors()
                         .withRequestDefaults(prettyPrint())
                         .withResponseDefaults(prettyPrint()))
+                .responseTimeout(Duration.ofMillis(15000))
                 .build();
     }
 
@@ -50,14 +52,13 @@ public class BaseControllerTest {
         return linkTo(clazz).toString();
     }
 
-    protected void preCreateMember() throws Exception {
-        mockMvc.perform(post("/member/save")
+    protected WebTestClient.ResponseSpec login() {
+        return webTestClient.post()
+                .uri("/member/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("memberName", LOGIN_NAME)
-                .param("password", LOGIN_PASSWORD))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .body(BodyInserters.fromFormData("memberName", LOGIN_NAME)
+                        .with("password", LOGIN_PASSWORD))
+                .exchange();
     }
-
 }
 

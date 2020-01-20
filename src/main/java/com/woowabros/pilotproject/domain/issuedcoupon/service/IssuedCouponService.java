@@ -78,7 +78,7 @@ public class IssuedCouponService {
         Member member = memberService.findById(memberId);
 
         return issuedCouponRepository.findAllByMember(member).stream()
-                .filter(IssuedCoupon::isIssuableStatus)
+                .filter(IssuedCoupon::isUsableStatus)
                 .filter(issuedCoupon -> issuedCoupon.getCoupon().isUsableDate())
                 .map(this::toDto)
                 .collect(Collectors.toList());
