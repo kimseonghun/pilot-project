@@ -106,7 +106,7 @@ class OrderServiceTest {
         OrderCreateRequestDto dto = OrderCreateRequestDto.builder()
                 .couponCodes(couponCodes)
                 .menuIds(menuIds)
-                .paymentType(PaymentType.SIMPLICITY.getName())
+                .paymentType(PaymentType.SIMPLICITY)
                 .build();
 
         given(orderRepository.save(any())).willReturn(Order.builder()

@@ -15,9 +15,9 @@ public class OrderCreateRequestDto {
     private List<String> couponCodes;
 
     @Builder
-    public OrderCreateRequestDto(List<Long> menuIds, String paymentType, List<String> couponCodes) {
+    public OrderCreateRequestDto(List<Long> menuIds, PaymentType paymentType, List<String> couponCodes) {
         this.menuIds = menuIds;
-        this.paymentType = PaymentType.ofName(paymentType);
+        this.paymentType = paymentType;
         this.couponCodes = couponCodes;
     }
 }

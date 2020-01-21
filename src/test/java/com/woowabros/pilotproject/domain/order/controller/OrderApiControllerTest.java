@@ -30,7 +30,7 @@ class OrderApiControllerTest extends BaseControllerTest {
         String couponCode = "9876";
 
         OrderCreateRequestDto orderCreateRequestDto = OrderCreateRequestDto.builder()
-                .paymentType(PaymentType.SIMPLICITY.getName())
+                .paymentType(PaymentType.SIMPLICITY)
                 .menuIds(Arrays.asList(chickenId, pizzaId, hamburgerId))
                 .couponCodes(Collections.singletonList(couponCode))
                 .build();

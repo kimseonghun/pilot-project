@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="mrg-btm-30">
+    <h2>주문</h2>
+</div>
+<div>
+    <form id="menus"></form>
+</div>
+<button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
+<div>
+    <form id="coupons"></form>
+</div>
+<select id="paymentType" name="paymentType">
+    <option value="CARD" selected="selected">카드 결제</option>
+    <option value="PHONE">핸드폰 결제</option>
+    <option value="SIMPLICITY">간편 결제</option>
+</select>
+<button onclick="order()">주문</button>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+<script>
+    const menuTemplate =
+        "{{#menus}}\n" +
+        "<input name='menu-checkbox' type='checkbox' value='{{menuId}}'>{{menuName}} - {{menuPrice}}<br>\n" +
+        "{{/menus}}\n";
+
+    function findMenus() {
+        fetch("/api/v1/menu", {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(addMenu)
+            .catch(error);
+    }
+
+    function addMenu(json) {
+        const data = json;
+        console.log(data);
+        const couponItemTemplate = Handlebars.compile(menuTemplate);
+        const menus = document.getElementById('menus');
+        const datas = {
+            menus: data
+        };
+        menus.innerHTML = couponItemTemplate(datas);
+    }
+
+    function error(err) {
+        alert('오류가 발생했습니다. 다시 시도해주세요');
+    }
+
+    findMenus();
+
+    const couponTemplate =
+        "{{#coupons}}\n" +
+        "<input name='coupon-checkbox' type='checkbox' value='{{couponCode}}'>{{couponName}} - {{couponPrice}}<br>\n" +
+        "{{/coupons}}\n";
+
+    function findUsableCoupons() {
+        fetch("/api/v1/issuedcoupon/usable", {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(addCoupon)
+            .catch(error);
+    }
+
+    function addCoupon(json) {
+        const data = json;
+        console.log(data);
+        const couponItemTemplate = Handlebars.compile(couponTemplate);
+        const coupons = document.getElementById('coupons');
+        const datas = {
+            coupons: data
+        };
+        coupons.innerHTML = couponItemTemplate(datas);
+    }
+
+    function selectChkBox(name) {
+        let array = [];
+        const checkbox = document.getElementsByName(name);
+        for (let i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked === true) {
+                array.push(checkbox[i].value)
+            }
+        }
+        return array;
+    }
+
+    function order() {
+        const menus = selectChkBox('menu-checkbox');
+        const coupons = selectChkBox('coupon-checkbox');
+        const payment = document.getElementById('paymentType');
+
+        const data = {};
+        data.menuIds = menus;
+        data.couponCodes = coupons;
+        data.paymentType = payment.value;
+        const dataBody = JSON.stringify(data);
+        console.log(dataBody);
+
+        fetch("/api/v1/order", {
+            method: "POST",
+            body: dataBody,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data));
+                } else {
+                    alert("주문 완료");
+                }
+            })
+    }
+</script>
+</html>
