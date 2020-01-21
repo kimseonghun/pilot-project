@@ -8,6 +8,7 @@ import com.woowabros.pilotproject.domain.order.domain.converter.PaymentTypeAttri
 import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
 import com.woowabros.pilotproject.domain.order.exception.CannotCancelOrderException;
+import com.woowabros.pilotproject.domain.order.exception.CannotUseCouponException;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import lombok.*;
 
@@ -62,6 +63,10 @@ public class Order extends BaseTimeEntity {
         this.totalDiscountPrice = usedCoupons.stream()
                 .map(issuedCoupon -> issuedCoupon.getCoupon().getPrice())
                 .reduce(0, Integer::sum);
+
+        if (this.totalPrice < this.totalDiscountPrice) {
+            throw new CannotUseCouponException();
+        }
 
         return this;
     }

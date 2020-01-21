@@ -85,7 +85,10 @@ class OrderServiceTest {
     @Test
     void 주문_저장_테스트() {
         // given
-        Menu menu = mock(Menu.class);
+        Menu menu = Menu.builder()
+                .name("chicken")
+                .price(20000)
+                .build();
         OrderMenu orderMenu = OrderMenu.builder()
                 .order(order)
                 .menu(menu)

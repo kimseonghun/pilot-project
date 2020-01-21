@@ -7,6 +7,7 @@ import com.woowabros.pilotproject.domain.menu.domain.Menu;
 import com.woowabros.pilotproject.domain.order.domain.vo.OrderStatus;
 import com.woowabros.pilotproject.domain.order.domain.vo.PaymentType;
 import com.woowabros.pilotproject.domain.order.exception.CannotCancelOrderException;
+import com.woowabros.pilotproject.domain.order.exception.CannotUseCouponException;
 import com.woowabros.pilotproject.domain.ordermenu.domain.OrderMenu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,9 @@ class OrderTest {
     @Test
     void 총_할인_금액_계산_테스트() {
         // given
+        order = Order.builder()
+                .totalPrice(50000)
+                .build();
         Coupon coupon = Coupon.builder()
                 .issuableDate(LocalDateTime.now())
                 .usableDate(LocalDateTime.now())
@@ -81,6 +85,30 @@ class OrderTest {
         // then
         assertThat(result.getTotalDiscountPrice())
                 .isEqualTo(issuedCoupon1.getCoupon().getPrice() + issuedCoupon2.getCoupon().getPrice());
+    }
+
+    @Test
+    void 총_할인_금액이_주문_금액보다_큰_경우_예외_테스트() {
+        // given
+        order = Order.builder()
+                .totalPrice(100)
+                .build();
+        Coupon coupon = Coupon.builder()
+                .issuableDate(LocalDateTime.now())
+                .usableDate(LocalDateTime.now())
+                .price(3000).build();
+        IssuedCoupon issuedCoupon1 = IssuedCoupon.builder()
+                .couponCode("1234")
+                .coupon(coupon)
+                .build();
+        IssuedCoupon issuedCoupon2 = IssuedCoupon.builder()
+                .couponCode("4321")
+                .coupon(coupon)
+                .build();
+        List<IssuedCoupon> issuedCoupons = Arrays.asList(issuedCoupon1, issuedCoupon2);
+
+        // when & then
+        assertThrows(CannotUseCouponException.class, () -> order.calculateTotalDiscountPrice(issuedCoupons));
     }
 
     @Test
