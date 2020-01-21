@@ -17,4 +17,9 @@ public class MemberController {
     public String renderLogInPage() {
         return "login";
     }
+
+    @GetMapping("/info")
+    public String renderMemberInfoPage() {
+        return "member-info";
+    }
 }

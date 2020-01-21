@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/coupon")
 public class CouponController {
 
-    @GetMapping
+    @GetMapping("/admin")
     public String renderCouponAdminPage() {
         return "coupon-admin";
+    }
+
+    @GetMapping("/issue")
+    public String renderCouponIssuePage() {
+        return "coupon-issue";
     }
 }
