@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h2>로그인</h2>
+</div>
+<div>
+    <label>MemberName</label>
+    <input id="membername" type="text" name="membername">
+</div>
+<div>
+    <label>Password</label>
+    <input id="password" type="password" name="password" placeholder="Password">
+</div>
+<div>
+    <button type="submit" onclick="login()">로그인</button>
+</div>
+</body>
+<script type="text/javascript" th:inline="javascript">
+    function login() {
+        const name = document.getElementById('membername');
+        const password = document.getElementById('password');
+
+        const data = {};
+        data.memberName = name.value;
+        data.password = password.value;
+        const dataBody = JSON.stringify(data);
+
+        fetch("/api/v1/member/login", {
+            method: "POST",
+            body: dataBody,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => signUpError(data));
+                } else {
+                    location.href = "/"
+                }
+            })
+    }
+
+    function signUpError(errorMessage) {
+        alert(errorMessage);
+    }
+</script>
+</html>
