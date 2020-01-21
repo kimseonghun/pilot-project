@@ -10,7 +10,7 @@
 </div>
 <div>
     <label>MemberName</label>
-    <input id="membername" type="text" name="membername">
+    <input id="member-name" type="text" name="member-name">
 </div>
 <div>
     <label>Password</label>
@@ -22,7 +22,7 @@
 </body>
 <script type="text/javascript" th:inline="javascript">
     function login() {
-        const name = document.getElementById('membername');
+        const name = document.getElementById('member-name');
         const password = document.getElementById('password');
 
         const data = {};

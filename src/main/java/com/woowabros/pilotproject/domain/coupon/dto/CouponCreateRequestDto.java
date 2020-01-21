@@ -1,8 +1,8 @@
 package com.woowabros.pilotproject.domain.coupon.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowabros.pilotproject.domain.coupon.domain.Coupon;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public class CouponCreateRequestDto {
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime issuableDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime usableDate;
 
     private Integer price;

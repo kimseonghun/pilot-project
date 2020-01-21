@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h2>쿠폰 발급</h2>
+</div>
+<div>
+    <label>쿠폰 이름</label>
+    <input id="name" type="text" name="name">
+</div>
+<div>
+    <label>발급 가능 날짜</label>
+    <input id="issuable-date" type="date" name="issuable-date">
+</div>
+<div>
+    <label>사용 가능 날짜</label>
+    <input id="usable-date" type="date" name="usable-date">
+</div>
+<div>
+    <label>할인 금액</label>
+    <input id="price" type="text" name="price">
+</div>
+<div>
+    <label>수량</label>
+    <input id="amount" type="text" name="amount">
+</div>
+<div>
+    <button type="submit" onclick="create()">쿠폰 생성</button>
+</div>
+<div>
+    <button type="submit" onclick="findAll()">쿠폰 조회</button>
+</div>
+<div>
+    <ul id="coupons">
+
+    </ul>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+<script src="/js/coupon.js"></script>
+</html>

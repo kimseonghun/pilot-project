@@ -20,7 +20,7 @@
 include::{snippets}/member/save/http-request.adoc[]
 
 .request parameters
-include::{snippets}/member/save/request-parameters.adoc[]
+include::{snippets}/member/save/request-fields.adoc[]
 
 .response
 include::{snippets}/member/save/http-response.adoc[]
@@ -31,7 +31,7 @@ include::{snippets}/member/save/http-response.adoc[]
 include::{snippets}/member/login/http-request.adoc[]
 
 .request parameters
-include::{snippets}/member/login/request-parameters.adoc[]
+include::{snippets}/member/login/request-fields.adoc[]
 
 .response
 include::{snippets}/member/login/http-response.adoc[]
