@@ -13,7 +13,7 @@ insert into coupon(id, name, issuable_date, usable_date, price, amount)
 values (2, '교촌치킨 3000원 쿠폰', '2021-07-12T22:47:34', '2022-07-12T22:47:34', 3000, 100);
 
 insert into coupon(id, name, issuable_date, usable_date, price, amount)
-values (3, '미스터 피 3000원 쿠폰', '2021-07-12T22:47:34', '2022-07-12T22:47:34', 1000, 100);
+values (3, '미스터 피자 3000원 쿠폰', '2021-07-12T22:47:34', '2022-07-12T22:47:34', 1000, 100);
 
 insert into orders(id, total_price, total_discount_price, payment, status, member_id)
 values (1, 54000, 2000, 1, 1, 1);

@@ -12,4 +12,9 @@ public class OrderController {
     public String renderOrderPage() {
         return "order";
     }
+
+    @GetMapping("/history")
+    public String renderOrderHistoryPage() {
+        return "order-history";
+    }
 }

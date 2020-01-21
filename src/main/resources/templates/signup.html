@@ -26,17 +26,17 @@
     <a href="/member/login">로그인</a>
 </div>
 </body>
-<script>
-    function signUp() {
-        const name = document.getElementById('membername');
-        const password = document.getElementById('password');
+    <script>
+        function signUp() {
+            const name = document.getElementById('membername');
+            const password = document.getElementById('password');
 
-        const data = {};
-        data.memberName = name.value;
-        data.password = password.value;
-        const dataBody = JSON.stringify(data);
+            const data = {};
+            data.memberName = name.value;
+            data.password = password.value;
+            const dataBody = JSON.stringify(data);
 
-        fetch("/api/v1/member/signup", {
+            fetch("/api/v1/member/signup", {
             method: "POST",
             body: dataBody,
             headers: {

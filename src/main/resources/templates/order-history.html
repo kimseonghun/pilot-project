@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="mrg-btm-30">
+    <h2>주문 내역</h2>
+</div>
+<div>
+    <ul id="orders"></ul>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+<script>
+    const orderTemplate =
+        "{{#orders}}\n" +
+        "<li>\n" +
+        "     <div>\n" +
+        "          <p>주문 번호 : {{orderId}}</p>\n" +
+        "          <div>메뉴</div>\n" +
+        "          <ul>\n" +
+        "          {{#menus}}\n" +
+        "               <li>메뉴 번호 : {{menuId}}</li>\n" +
+        "               <li>메뉴 이름 : {{menuName}}</li>\n" +
+        "               <li>메뉴 가격 : {{menuPrice}}</li>" +
+        "               </br>\n" +
+        "          {{/menus}}\n" +
+        "          </ul>\n" +
+        "          <p>결제 수단 : {{paymentType}}</p>\n" +
+        "          <p>주문 상태 : {{orderStatus}}</p>\n" +
+        "          <div>쿠폰</div>\n" +
+        "          <ul>\n" +
+        "          {{#coupons}}\n" +
+        "               <li>쿠폰 코드 : {{couponCode}}</li>\n" +
+        "               <li>쿠폰 이름 : {{couponName}}</li>\n" +
+        "               <li>쿠폰 할인 가격 : {{couponPrice}}</li>\n" +
+        "               </br>\n" +
+        "          {{/coupons}}\n" +
+        "          </ul>\n" +
+        "          <p>주문 총 금액 : {{totalPrice}}</p>\n" +
+        "          <p>할인 총 금액 : {{totalDiscountPrice}}</p>\n" +
+        "     </div>\n" +
+        "</li>\n" +
+        "{{/orders}}\n";
+
+    function findOrderHistory() {
+        fetch("/api/v1/order/", {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(addOrder)
+            .catch(error);
+    }
+
+    function addOrder(json) {
+        const data = json;
+        console.log(data);
+        const couponItemTemplate = Handlebars.compile(orderTemplate);
+        const orders = document.getElementById('orders');
+        const datas = {
+            orders: data
+        };
+        orders.innerHTML = couponItemTemplate(datas);
+    }
+
+    function error(err) {
+        alert('오류가 발생했습니다. 다시 시도해주세요');
+    }
+
+    findOrderHistory();
+</script>
+</html>
