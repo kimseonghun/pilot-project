@@ -42,6 +42,7 @@ public class OrderMenuService {
 
     private MenuResponseDto toDto(Menu menu) {
         return MenuResponseDto.builder()
+                .menuId(menu.getId())
                 .menuName(menu.getName())
                 .menuPrice(menu.getPrice())
                 .build();

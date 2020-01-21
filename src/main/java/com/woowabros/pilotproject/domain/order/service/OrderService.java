@@ -82,6 +82,7 @@ public class OrderService {
                 .menus(orderMenuService.findByOrder(order))
                 .coupons(issuedCouponService.findUsedCouponByOrderId(order))
                 .totalPrice(order.getTotalPrice())
+                .totalDiscountPrice(order.getTotalDiscountPrice())
                 .build();
     }
 }

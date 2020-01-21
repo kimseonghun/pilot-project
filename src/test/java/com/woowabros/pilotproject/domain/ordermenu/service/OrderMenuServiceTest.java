@@ -71,6 +71,7 @@ class OrderMenuServiceTest {
 
         // then
         assertThat(menus).contains(MenuResponseDto.builder()
+                .menuId(menu.getId())
                 .menuName(menu.getName())
                 .menuPrice(menu.getPrice())
                 .build());

@@ -64,6 +64,7 @@ class OrderServiceTest {
         order = Order.builder()
                 .payment(PaymentType.CARD)
                 .totalPrice(36000)
+                .totalDiscountPrice(3000)
                 .member(member)
                 .build();
 
@@ -77,6 +78,7 @@ class OrderServiceTest {
                 .orderStatus(order.getStatus().getName())
                 .coupons(coupons)
                 .totalPrice(order.getTotalPrice())
+                .totalDiscountPrice(order.getTotalDiscountPrice())
                 .build();
     }
 

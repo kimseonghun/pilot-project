@@ -17,15 +17,17 @@ public class OrderResponseDto {
     private String orderStatus;
     private List<IssuedCouponResponseDto> coupons;
     private Integer totalPrice;
+    private Integer totalDiscountPrice;
 
     @Builder
     public OrderResponseDto(Long orderId, List<MenuResponseDto> menus, String paymentType, String orderStatus,
-                            List<IssuedCouponResponseDto> coupons, Integer totalPrice) {
+                            List<IssuedCouponResponseDto> coupons, Integer totalPrice, Integer totalDiscountPrice) {
         this.orderId = orderId;
         this.menus = menus;
         this.paymentType = paymentType;
         this.orderStatus = orderStatus;
         this.coupons = coupons;
         this.totalPrice = totalPrice;
+        this.totalDiscountPrice = totalDiscountPrice;
     }
 }

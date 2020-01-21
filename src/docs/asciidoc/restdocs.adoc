@@ -145,3 +145,14 @@ include::{snippets}/order/cancel/path-parameters.adoc[]
 
 .response
 include::{snippets}/order/cancel/http-response.adoc[]
+
+=== findAll()
+
+.request
+include::{snippets}/order/findAll/http-request.adoc[]
+
+.response
+include::{snippets}/order/findAll/http-response.adoc[]
+
+.response fields
+include::{snippets}/order/findAll/response-fields.adoc[]
