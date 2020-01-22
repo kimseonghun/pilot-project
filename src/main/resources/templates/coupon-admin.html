@@ -8,31 +8,33 @@
 <div>
     <h2>쿠폰 발급</h2>
 </div>
-<div>
+<p>
     <label>쿠폰 이름</label>
     <input id="name" type="text" name="name">
-</div>
-<div>
+</p>
+<p>
     <label>발급 가능 날짜</label>
     <input id="issuable-date" type="date" name="issuable-date">
-</div>
-<div>
+</p>
+<p>
     <label>사용 가능 날짜</label>
     <input id="usable-date" type="date" name="usable-date">
-</div>
-<div>
+</p>
+<p>
     <label>할인 금액</label>
     <input id="price" type="text" name="price">
-</div>
-<div>
+</p>
+<p>
     <label>수량</label>
     <input id="amount" type="text" name="amount">
-</div>
+</p>
 <div>
-    <button type="submit" onclick="create()">쿠폰 생성</button>
-</div>
-<div>
-    <button type="submit" onclick="findAll()">쿠폰 조회</button>
+    <span>
+        <button type="submit" onclick="create()">쿠폰 생성</button>
+    </span>&emsp;
+    <span>
+        <button type="submit" onclick="findAll()">쿠폰 조회</button>
+    </span>
 </div>
 <div>
     <ul id="coupons"></ul>
@@ -80,11 +82,13 @@
         "{{#coupons}}\n" +
         "<li>\n" +
         "     <div>\n" +
-        "          <p>{{id}}</p>\n" +
-        "          <p>{{name}}</p>\n" +
-        "          <p>{{issuableDate}}</p>\n" +
-        "          <p>{{usableDate}}</p>\n" +
-        "          <p>{{price}}</p>\n" +
+        "          <span>쿠폰 번호 : {{id}}</span>&emsp;\n" +
+        "          <span>쿠폰 이름 : {{name}}</span>\n" +
+        "          </br>" +
+        "          <p id='issuableDate'>발급 가능 날짜 : {{issuableDate}}</p>\n" +
+        "          <p id='usableDate'>사용 가능 날짜 : {{usableDate}}</p>\n" +
+        "          <p>할인 금액 : {{price}}원</p>\n" +
+        "          </br>\n" +
         "     </div>\n" +
         "</li>\n" +
         "{{/coupons}}\n";
@@ -93,9 +97,15 @@
         fetch("/api/v1/coupon", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addCoupon)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addCoupon(data));
+                }
+            })
     }
 
     function addCoupon(json) {

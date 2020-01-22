@@ -17,9 +17,9 @@
         "{{#coupons}}\n" +
         "<li>\n" +
         "     <div>\n" +
-        "          <p>{{couponCode}}</p>\n" +
-        "          <p>{{couponName}}</p>\n" +
-        "          <p>{{couponPrice}}</p>\n" +
+        "          <p>쿠폰 코드 : {{couponCode}}</p>\n" +
+        "          <p>쿠폰 이름 : {{couponName}}</p>\n" +
+        "          <p>할인 금액 : {{couponPrice}}원</p>\n" +
         "     </div>\n" +
         "</li>\n" +
         "{{/coupons}}\n";
@@ -28,9 +28,15 @@
         fetch("/api/v1/issuedcoupon/usable", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addCoupon)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addCoupon(data));
+                }
+            })
     }
 
     function addCoupon(json) {

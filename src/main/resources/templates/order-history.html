@@ -18,9 +18,10 @@
         "{{#orders}}\n" +
         "<li>\n" +
         "     <div>\n" +
-        "          <span>주문 번호 : {{orderId}}</span>\n" +
-        "          <button onclick='cancelOrder({{orderId}})'>주문 취소</button>\n" +
-        "          </br>\n" +
+        "          <div>\n" +
+        "               <span>주문 번호 : {{orderId}}</span>\n" +
+        "               <button onclick='cancelOrder({{orderId}})'>주문 취소</button>\n" +
+        "          </div>\n" +
         "          <div>메뉴</div>\n" +
         "          <ul>\n" +
         "          {{#menus}}\n" +
@@ -55,9 +56,15 @@
         fetch("/api/v1/order/", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addOrder)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addOrder(data));
+                }
+            })
     }
 
     function addOrder(json) {

@@ -11,31 +11,44 @@
 <div>
     <form id="menus"></form>
 </div>
-<button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
-<div>
-    <form id="coupons"></form>
-</div>
+<p>
+    <button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
+</p>
+<p>
+<form id="coupons"></form>
+</p>
+<span>결제 수단</span>
 <select id="paymentType" name="paymentType">
     <option value="CARD" selected="selected">카드 결제</option>
     <option value="PHONE">핸드폰 결제</option>
     <option value="SIMPLICITY">간편 결제</option>
 </select>
-<button onclick="order()">주문</button>
+<p>
+    <button onclick="order()">주문</button>
+</p>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
     const menuTemplate =
         "{{#menus}}\n" +
-        "<input name='menu-checkbox' type='checkbox' value='{{menuId}}'>{{menuName}} - {{menuPrice}}<br>\n" +
+        "<p>\n" +
+        "   <input name='menu-checkbox' type='checkbox' value='{{menuId}}'>{{menuName}} - {{menuPrice}}원<br>\n" +
+        "</p>\n" +
         "{{/menus}}\n";
 
     function findMenus() {
         fetch("/api/v1/menu", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addMenu)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addMenu(data));
+                }
+            })
     }
 
     function addMenu(json) {
@@ -64,9 +77,15 @@
         fetch("/api/v1/issuedcoupon/usable", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addCoupon)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addCoupon(data));
+                }
+            })
     }
 
     function addCoupon(json) {

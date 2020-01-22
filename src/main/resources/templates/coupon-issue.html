@@ -18,12 +18,13 @@
         "{{#coupons}}\n" +
         "<li>\n" +
         "     <div>\n" +
-        "          <p>{{name}}</p>\n" +
-        "          <p>{{issuableDate}}</p>\n" +
-        "          <p>{{usableDate}}</p>\n" +
-        "          <p>{{price}}</p>\n" +
+        "          <p>쿠폰 이름 : {{name}}</p>\n" +
+        "          <p>발급 가능 날짜 : {{issuableDate}}</p>\n" +
+        "          <p>사용 가능 날짜 : {{usableDate}}</p>\n" +
+        "          <p>할인 금액 : {{price}}원</p>\n" +
         "          <button onclick='issue({{id}})'>발급 받기</button>\n" +
         "     </div>\n" +
+        "     </br>\n" +
         "</li>\n" +
         "{{/coupons}}\n";
 
@@ -45,9 +46,15 @@
         fetch("/api/v1/coupon/issuable", {
             method: "GET",
         })
-            .then(response => response.json())
-            .then(addCoupon)
-            .catch(data => error(data.message));
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data.message));
+                } else {
+                    const res = response.json();
+                    res.then(data => addCoupon(data));
+                }
+            })
     }
 
     function addCoupon(json) {

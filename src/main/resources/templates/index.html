@@ -4,18 +4,41 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    #wrapper {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+
+    #wrapper_nav {
+        position: absolute;
+        top: 40%;
+        left: 43%;
+    }
+</style>
 <body>
-<div>
-    <a href="/member/login">로그인</a>
+<div id="wrapper">
+    <div>
+        <h2>메인</h2>
+    </div>
 </div>
-<div>
-    <a href="/coupon/admin">쿠폰 어드민</a>
-</div>
-<div>
-    <a href="/member/info">회원 정보</a>
-</div>
-<div>
-    <a href="/order">주문</a>
+<div id="wrapper_nav">
+        <span>
+            <a href="/member/login">로그인</a>
+        </span>
+    &emsp;
+    <span>
+            <a href="/coupon/admin">쿠폰 어드민</a>
+        </span>
+    &emsp;
+    <span>
+            <a href="/member/info">회원 정보</a>
+        </span>
+    &emsp;
+    <span>
+            <a href="/order">주문</a>
+        </span>
 </div>
 </body>
 </html>
