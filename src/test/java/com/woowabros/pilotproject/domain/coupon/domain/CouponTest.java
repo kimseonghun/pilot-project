@@ -50,6 +50,12 @@ class CouponTest {
     }
 
     @Test
+    void 해당_쿠폰의_수량이_남아있는지_테스트() {
+        // when & then
+        assertThat(coupon.isIssuableAmount()).isTrue();
+    }
+
+    @Test
     void 해당_쿠폰_수량_차감_테스트() {
         // when & then
         assertThat(coupon.subtractAmount()).isEqualTo(0);

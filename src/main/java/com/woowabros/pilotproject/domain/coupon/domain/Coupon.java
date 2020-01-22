@@ -54,7 +54,11 @@ public class Coupon extends BaseTimeEntity {
     }
 
     public boolean isIssuableDate() {
-        return LocalDateTime.now().isBefore(issuableDate) && this.amount > EXHAUSTED_COUPON_AMOUNT;
+        return LocalDateTime.now().isBefore(issuableDate);
+    }
+
+    public boolean isIssuableAmount() {
+        return this.amount > EXHAUSTED_COUPON_AMOUNT;
     }
 
     public boolean isUsableDate() {
@@ -62,7 +66,7 @@ public class Coupon extends BaseTimeEntity {
     }
 
     public Integer subtractAmount() {
-        if (this.amount == EXHAUSTED_COUPON_AMOUNT) {
+        if (!isIssuableAmount()) {
             throw new NotIssuableCouponException();
         }
         return --this.amount;

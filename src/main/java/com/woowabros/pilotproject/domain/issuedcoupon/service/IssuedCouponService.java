@@ -59,6 +59,7 @@ public class IssuedCouponService {
 
         IssuedCoupon issuableCoupon = coupon.getIssuedCoupons().stream()
                 .filter(IssuedCoupon::isIssuableStatus)
+                .filter(issuedCoupon -> issuedCoupon.getCoupon().isIssuableAmount())
                 .filter(issuedCoupon -> hasNotCoupon(issuedCoupon, member))
                 .findAny()
                 .orElseThrow(NotIssuableCouponException::new);
