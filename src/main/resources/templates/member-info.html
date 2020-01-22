@@ -30,7 +30,7 @@
         })
             .then(response => response.json())
             .then(addCoupon)
-            .catch(findAllError);
+            .catch(data => error(data.message));
     }
 
     function addCoupon(json) {
@@ -44,8 +44,8 @@
         coupons.innerHTML = couponItemTemplate(datas);
     }
 
-    function findAllError(err) {
-        alert('오류가 발생했습니다. 다시 시도해주세요');
+    function error(errorMessage) {
+        alert(errorMessage);
     }
 </script>
 </html>

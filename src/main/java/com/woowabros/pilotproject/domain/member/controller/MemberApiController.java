@@ -1,18 +1,17 @@
 package com.woowabros.pilotproject.domain.member.controller;
 
 import com.woowabros.pilotproject.config.resolver.SessionMember;
+import com.woowabros.pilotproject.domain.common.domain.ErrorResponse;
 import com.woowabros.pilotproject.domain.member.domain.Member;
 import com.woowabros.pilotproject.domain.member.dto.MemberCreateDto;
 import com.woowabros.pilotproject.domain.member.dto.MemberLoginDto;
 import com.woowabros.pilotproject.domain.member.dto.MemberResponseDto;
 import com.woowabros.pilotproject.domain.member.exception.NotValidMemberCreateException;
 import com.woowabros.pilotproject.domain.member.service.MemberService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -45,5 +44,13 @@ public class MemberApiController {
                 .memberName(loginedMember.getMemberName())
                 .build());
         return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+        return ResponseEntity.badRequest().body(ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build());
     }
 }

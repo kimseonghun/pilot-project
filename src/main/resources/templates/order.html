@@ -35,7 +35,7 @@
         })
             .then(response => response.json())
             .then(addMenu)
-            .catch(error);
+            .catch(data => error(data.message));
     }
 
     function addMenu(json) {
@@ -49,8 +49,8 @@
         menus.innerHTML = couponItemTemplate(datas);
     }
 
-    function error(err) {
-        alert('오류가 발생했습니다. 다시 시도해주세요');
+    function error(errorMessage) {
+        alert(errorMessage);
     }
 
     findMenus();
@@ -66,7 +66,7 @@
         })
             .then(response => response.json())
             .then(addCoupon)
-            .catch(error);
+            .catch(data => error(data.message));
     }
 
     function addCoupon(json) {
@@ -113,7 +113,7 @@
             .then(response => {
                 if (response.status !== 200) {
                     const res = response.json();
-                    res.then(data => error(data));
+                    res.then(data => error(data.message));
                 } else {
                     alert("주문 완료");
                     location.href = "/order/history";

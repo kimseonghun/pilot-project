@@ -57,7 +57,7 @@
         })
             .then(response => response.json())
             .then(addOrder)
-            .catch(error);
+            .catch(data => error(data.message));
     }
 
     function addOrder(json) {
@@ -71,8 +71,8 @@
         orders.innerHTML = couponItemTemplate(datas);
     }
 
-    function error(err) {
-        alert('오류가 발생했습니다. 다시 시도해주세요');
+    function error(errorMessage) {
+        alert(errorMessage);
     }
 
     findOrderHistory();
@@ -84,7 +84,7 @@
             .then(response => {
                 if (response.status !== 200) {
                     const res = response.json();
-                    res.then(data => error(data));
+                    res.then(data => error(data.message));
                 } else {
                     alert("취소 완료");
                     findOrderHistory();

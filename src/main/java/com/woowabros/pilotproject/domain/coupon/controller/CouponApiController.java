@@ -1,9 +1,11 @@
 package com.woowabros.pilotproject.domain.coupon.controller;
 
+import com.woowabros.pilotproject.domain.common.domain.ErrorResponse;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponCreateRequestDto;
 import com.woowabros.pilotproject.domain.coupon.dto.CouponResponseDto;
 import com.woowabros.pilotproject.domain.coupon.service.CouponService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +42,13 @@ public class CouponApiController {
     public ResponseEntity<List<CouponResponseDto>> findIssuableCoupons() {
         List<CouponResponseDto> response = couponService.findIssuableCoupons();
         return ResponseEntity.ok(response);
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+        return ResponseEntity.badRequest().body(ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build());
     }
 }

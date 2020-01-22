@@ -1,13 +1,12 @@
 package com.woowabros.pilotproject.domain.issuedcoupon.controller;
 
 import com.woowabros.pilotproject.config.resolver.SessionMember;
+import com.woowabros.pilotproject.domain.common.domain.ErrorResponse;
 import com.woowabros.pilotproject.domain.issuedcoupon.dto.IssuedCouponResponseDto;
 import com.woowabros.pilotproject.domain.issuedcoupon.service.IssuedCouponService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +29,13 @@ public class IssuedCouponApiController {
     public ResponseEntity issue(@PathVariable Long couponId, SessionMember sessionMember) {
         issuedCouponService.issue(couponId, sessionMember.getMemberId());
         return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+        return ResponseEntity.badRequest().body(ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build());
     }
 }

@@ -46,15 +46,15 @@
             .then(response => {
                 if (response.status !== 200) {
                     const res = response.json();
-                    res.then(data => signUpError(data));
+                    res.then(data => error(data.message));
                 } else {
                     location.href = "/member/login"
                 }
             })
     }
 
-    function signUpError(errorMessage) {
-        alert(errorMessage);
-    }
+        function error(errorMessage) {
+            alert(errorMessage);
+        }
 </script>
 </html>

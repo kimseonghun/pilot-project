@@ -28,14 +28,13 @@
         "{{/coupons}}\n";
 
     function issue(id) {
-        console.log("id is " + id);
         fetch("/api/v1/issuedcoupon/" + id, {
             method: "GET",
         })
             .then(response => {
                 if (response.status !== 200) {
                     const res = response.json();
-                    res.then(data => error(data));
+                    res.then(data => error(data.message));
                 } else {
                     alert("발급 완료")
                 }
@@ -48,7 +47,7 @@
         })
             .then(response => response.json())
             .then(addCoupon)
-            .catch(error);
+            .catch(data => error(data.message));
     }
 
     function addCoupon(json) {
@@ -62,8 +61,8 @@
         coupons.innerHTML = couponItemTemplate(datas);
     }
 
-    function error(err) {
-        alert('오류가 발생했습니다. 다시 시도해주세요');
+    function error(errorMessage) {
+        alert(errorMessage);
     }
 
     findIssuableCoupons();
