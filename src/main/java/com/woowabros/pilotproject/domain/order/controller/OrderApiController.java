@@ -27,7 +27,7 @@ public class OrderApiController {
     @DeleteMapping("/{orderId}")
     public ResponseEntity cancel(@PathVariable Long orderId, SessionMember sessionMember) {
         orderService.cancel(orderId, sessionMember.getMemberId());
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

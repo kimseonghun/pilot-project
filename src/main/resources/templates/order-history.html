@@ -18,29 +18,35 @@
         "{{#orders}}\n" +
         "<li>\n" +
         "     <div>\n" +
-        "          <p>주문 번호 : {{orderId}}</p>\n" +
+        "          <span>주문 번호 : {{orderId}}</span>\n" +
+        "          <button onclick='cancelOrder({{orderId}})'>주문 취소</button>\n" +
+        "          </br>\n" +
         "          <div>메뉴</div>\n" +
         "          <ul>\n" +
         "          {{#menus}}\n" +
         "               <li>메뉴 번호 : {{menuId}}</li>\n" +
         "               <li>메뉴 이름 : {{menuName}}</li>\n" +
-        "               <li>메뉴 가격 : {{menuPrice}}</li>" +
+        "               <li>메뉴 가격 : {{menuPrice}}원</li>" +
         "               </br>\n" +
         "          {{/menus}}\n" +
         "          </ul>\n" +
-        "          <p>결제 수단 : {{paymentType}}</p>\n" +
-        "          <p>주문 상태 : {{orderStatus}}</p>\n" +
+        "          <p>\n" +
+        "               <span>결제 수단 : {{paymentType}}</span>&emsp;\n" +
+        "               <span>주문 상태 : {{orderStatus}}</span>&emsp;\n" +
+        "          </p>\n" +
         "          <div>쿠폰</div>\n" +
         "          <ul>\n" +
         "          {{#coupons}}\n" +
         "               <li>쿠폰 코드 : {{couponCode}}</li>\n" +
         "               <li>쿠폰 이름 : {{couponName}}</li>\n" +
-        "               <li>쿠폰 할인 가격 : {{couponPrice}}</li>\n" +
+        "               <li>쿠폰 할인 가격 : {{couponPrice}}원</li>\n" +
         "               </br>\n" +
         "          {{/coupons}}\n" +
         "          </ul>\n" +
-        "          <p>주문 총 금액 : {{totalPrice}}</p>\n" +
-        "          <p>할인 총 금액 : {{totalDiscountPrice}}</p>\n" +
+        "          <p>\n" +
+        "               <span>주문 총 금액 : {{totalPrice}}원</span>&emsp;\n" +
+        "               <span>할인 총 금액 : {{totalDiscountPrice}}원</span>&emsp;\n" +
+        "          </p>\n" +
         "     </div>\n" +
         "</li>\n" +
         "{{/orders}}\n";
@@ -70,5 +76,20 @@
     }
 
     findOrderHistory();
+
+    function cancelOrder(orderId) {
+        fetch("/api/v1/order/" + orderId, {
+            method: "DELETE",
+        })
+            .then(response => {
+                if (response.status !== 200) {
+                    const res = response.json();
+                    res.then(data => error(data));
+                } else {
+                    alert("취소 완료");
+                    findOrderHistory();
+                }
+            })
+    }
 </script>
 </html>

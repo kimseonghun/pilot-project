@@ -67,6 +67,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public Order cancel(Long orderId, Long memberId) {
         Member member = memberService.findById(memberId);
         Order order = orderRepository.findById(orderId).orElseThrow(NotFoundOrderException::new);

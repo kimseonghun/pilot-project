@@ -63,7 +63,7 @@ class OrderApiControllerTest extends BaseControllerTest {
                 .exchange();
 
         // then
-        result.expectStatus().isNotFound()
+        result.expectStatus().isOk()
                 .expectBody()
                 .consumeWith(document("order/cancel",
                         pathParameters(
