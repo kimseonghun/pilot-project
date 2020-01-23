@@ -4,28 +4,31 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div>
-    <h2>발급 가능 쿠폰</h2>
-</div>
-<div>
-    <ul id="coupons"></ul>
+<div class="login-page">
+    <div style="text-align: center">
+        <div>
+            <h2>발급 가능 쿠폰</h2>
+        </div>
+    </div>
+    <div id="coupons"></div>
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
     const couponTemplate =
         "{{#coupons}}\n" +
-        "<li>\n" +
+        "<div class='form'>\n" +
         "     <div>\n" +
-        "          <p>쿠폰 이름 : {{name}}</p>\n" +
-        "          <p>발급 가능 날짜 : {{issuableDate}}</p>\n" +
-        "          <p>사용 가능 날짜 : {{usableDate}}</p>\n" +
-        "          <p>할인 금액 : {{price}}원</p>\n" +
+        "          <p>{{name}}</p>\n" +
+        "          <p>{{issuableDate}} 까지 발급</p>\n" +
+        "          <p>{{usableDate}} 까지 사용</p>\n" +
+        "          <p>{{price}}원 할인</p>\n" +
         "          <button onclick='issue({{id}})'>발급 받기</button>\n" +
         "     </div>\n" +
         "     </br>\n" +
-        "</li>\n" +
+        "</div>\n" +
         "{{/coupons}}\n";
 
     function issue(id) {

@@ -4,41 +4,29 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div>
-    <h2>쿠폰 발급</h2>
+<div class="login-page">
+    <div class="form">
+        <div>
+            <h2>쿠폰 발급</h2>
+        </div>
+        <div class="login-form">
+            <input id="name" type="text" name="name" placeholder="쿠폰 이름">
+            <input id="issuable-date" type="date" name="issuable-date" placeholder="발급 가능 날짜">
+            <input id="usable-date" type="date" name="usable-date" placeholder="사용 가능 날짜">
+            <input id="price" type="text" name="price" placeholder="할인 금액">
+            <input id="amount" type="text" name="amount" placeholder="수량">
+        </div>
+        <span>
+            <button type="submit" onclick="create()">쿠폰 생성</button>
+        </span>&emsp;
+        <span>
+            <button type="submit" onclick="findAll()">쿠폰 조회</button>
+        </span>
+    </div>
 </div>
-<p>
-    <label>쿠폰 이름</label>
-    <input id="name" type="text" name="name">
-</p>
-<p>
-    <label>발급 가능 날짜</label>
-    <input id="issuable-date" type="date" name="issuable-date">
-</p>
-<p>
-    <label>사용 가능 날짜</label>
-    <input id="usable-date" type="date" name="usable-date">
-</p>
-<p>
-    <label>할인 금액</label>
-    <input id="price" type="text" name="price">
-</p>
-<p>
-    <label>수량</label>
-    <input id="amount" type="text" name="amount">
-</p>
-<div>
-    <span>
-        <button type="submit" onclick="create()">쿠폰 생성</button>
-    </span>&emsp;
-    <span>
-        <button type="submit" onclick="findAll()">쿠폰 조회</button>
-    </span>
-</div>
-<div>
-    <ul id="coupons"></ul>
-</div>
+<div id="coupons" class="coupon-page"></div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
@@ -80,7 +68,7 @@
 
     const couponTemplate =
         "{{#coupons}}\n" +
-        "<li>\n" +
+        "<div class='form'>\n" +
         "     <div>\n" +
         "          <span>쿠폰 번호 : {{id}}</span>&emsp;\n" +
         "          <span>쿠폰 이름 : {{name}}</span>\n" +
@@ -90,7 +78,7 @@
         "          <p>할인 금액 : {{price}}원</p>\n" +
         "          </br>\n" +
         "     </div>\n" +
-        "</li>\n" +
+        "</div>\n" +
         "{{/coupons}}\n";
 
     function findAll() {

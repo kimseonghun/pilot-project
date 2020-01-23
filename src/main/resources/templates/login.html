@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div>
-    <h2>로그인</h2>
-</div>
-<div>
-    <label>MemberName</label>
-    <input id="member-name" type="text" name="member-name">
-</div>
-<div>
-    <label>Password</label>
-    <input id="password" type="password" name="password" placeholder="Password">
-</div>
-<div>
-    <button type="submit" onclick="login()">로그인</button>
-</div>
-<div>
-    <a href="/member/signup">회원가입</a>
+<div class="login-page">
+    <div class="form">
+        <div>
+            <h2>로그인</h2>
+        </div>
+        <div class="login-form">
+            <input id="member-name" type="text" name="member-name" placeholder="membername">
+            <input id="password" type="password" name="password" placeholder="password">
+        </div>
+        <div>
+            <button type="submit" onclick="login()">로그인</button>
+        </div>
+        <p class="message">
+            <a href="/member/signup">회원가입</a>
+        </p>
+    </div>
 </div>
 </body>
 <script type="text/javascript" th:inline="javascript">

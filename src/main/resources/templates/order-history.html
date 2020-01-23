@@ -4,52 +4,58 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div class="mrg-btm-30">
-    <h2>주문 내역</h2>
+<div class="login-page">
+    <div style="text-align: center">
+        <div>
+            <h2>주문 내역</h2>
+        </div>
+    </div>
+    <div id="orders"></div>
 </div>
-<div>
-    <ul id="orders"></ul>
-</div>
+>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
     const orderTemplate =
         "{{#orders}}\n" +
-        "<li>\n" +
+        "<div class='form'>\n" +
         "     <div>\n" +
         "          <div>\n" +
         "               <span>주문 번호 : {{orderId}}</span>\n" +
-        "               <button onclick='cancelOrder({{orderId}})'>주문 취소</button>\n" +
         "          </div>\n" +
+        "          </br>\n" +
         "          <div>메뉴</div>\n" +
-        "          <ul>\n" +
+        "          <div>\n" +
         "          {{#menus}}\n" +
-        "               <li>메뉴 번호 : {{menuId}}</li>\n" +
-        "               <li>메뉴 이름 : {{menuName}}</li>\n" +
-        "               <li>메뉴 가격 : {{menuPrice}}원</li>" +
-        "               </br>\n" +
+        "               <p>메뉴 번호 : {{menuId}}</p>\n" +
+        "               <p>메뉴 이름 : {{menuName}}</p>\n" +
+        "               <p>메뉴 가격 : {{menuPrice}}원</p>" +
         "          {{/menus}}\n" +
-        "          </ul>\n" +
+        "          </div>\n" +
+        "          </br>\n" +
         "          <p>\n" +
-        "               <span>결제 수단 : {{paymentType}}</span>&emsp;\n" +
-        "               <span>주문 상태 : {{orderStatus}}</span>&emsp;\n" +
+        "               <p>결제 수단 : {{paymentType}}</p>\n" +
+        "               <p>주문 상태 : {{orderStatus}}</p>\n" +
         "          </p>\n" +
+        "          </br>\n" +
         "          <div>쿠폰</div>\n" +
-        "          <ul>\n" +
+        "          <div>\n" +
         "          {{#coupons}}\n" +
-        "               <li>쿠폰 코드 : {{couponCode}}</li>\n" +
-        "               <li>쿠폰 이름 : {{couponName}}</li>\n" +
-        "               <li>쿠폰 할인 가격 : {{couponPrice}}원</li>\n" +
-        "               </br>\n" +
+        "               <p>쿠폰 코드 : {{couponCode}}</p>\n" +
+        "               <p>쿠폰 이름 : {{couponName}}</p>\n" +
+        "               <p>쿠폰 할인 가격 : {{couponPrice}}원</p>\n" +
         "          {{/coupons}}\n" +
-        "          </ul>\n" +
+        "          </div>\n" +
+        "          </br>\n" +
         "          <p>\n" +
-        "               <span>주문 총 금액 : {{totalPrice}}원</span>&emsp;\n" +
-        "               <span>할인 총 금액 : {{totalDiscountPrice}}원</span>&emsp;\n" +
+        "               <p>주문 총 금액 : {{totalPrice}}원</p>\n" +
+        "               <p>할인 총 금액 : {{totalDiscountPrice}}원</p>\n" +
         "          </p>\n" +
+        "          <button onclick='cancelOrder({{orderId}})'>주문 취소</button>\n" +
         "     </div>\n" +
-        "</li>\n" +
+        "</div>\n" +
         "{{/orders}}\n";
 
     function findOrderHistory() {

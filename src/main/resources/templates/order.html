@@ -4,36 +4,35 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div class="mrg-btm-30">
-    <h2>주문</h2>
+<div class="login-page">
+    <div class="form">
+        <h2>주문</h2>
+        <div>
+            <div id="menus"></div>
+        </div>
+        <button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
+        </br>
+        <div id="coupons"></div>
+        </br>
+        <span>결제 수단</span>
+        <select id="paymentType" name="paymentType">
+            <option value="CARD" selected="selected">카드 결제</option>
+            <option value="PHONE">핸드폰 결제</option>
+            <option value="SIMPLICITY">간편 결제</option>
+        </select>
+        <p>
+            <button onclick="order()">주문</button>
+        </p>
+    </div>
 </div>
-<div>
-    <form id="menus"></form>
-</div>
-<p>
-    <button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
-</p>
-<p>
-<form id="coupons"></form>
-</p>
-<span>결제 수단</span>
-<select id="paymentType" name="paymentType">
-    <option value="CARD" selected="selected">카드 결제</option>
-    <option value="PHONE">핸드폰 결제</option>
-    <option value="SIMPLICITY">간편 결제</option>
-</select>
-<p>
-    <button onclick="order()">주문</button>
-</p>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
     const menuTemplate =
         "{{#menus}}\n" +
-        "<p>\n" +
-        "   <input name='menu-checkbox' type='checkbox' value='{{menuId}}'>{{menuName}} - {{menuPrice}}원<br>\n" +
-        "</p>\n" +
+        "<input class='container' name='menu-checkbox' type='checkbox' value='{{menuId}}'>{{menuName}}  {{menuPrice}}원<br>\n" +
         "{{/menus}}\n";
 
     function findMenus() {

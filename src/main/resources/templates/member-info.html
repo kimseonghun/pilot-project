@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
-<div>
-    <ul id="coupons"></ul>
+<div class="login-page">
+    <div class="form">
+        <h2>사용 가능 쿠폰 조회</h2>
+        <button onclick="findUsableCoupons()">사용 가능 쿠폰 조회</button>
+        <p class="message">
+            <a href="/coupon/issue">쿠폰 발급 페이지</a>
+        </p>
+        </br>
+        <div id="coupons"></div>
+    </div>
 </div>
-<a href="/coupon/issue">쿠폰 발급 페이지</a>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
 <script>
     const couponTemplate =
         "{{#coupons}}\n" +
-        "<li>\n" +
+        "<div class='form'>\n" +
         "     <div>\n" +
-        "          <p>쿠폰 코드 : {{couponCode}}</p>\n" +
-        "          <p>쿠폰 이름 : {{couponName}}</p>\n" +
-        "          <p>할인 금액 : {{couponPrice}}원</p>\n" +
+        "          <p>쿠폰 코드</p>\n" +
+        "          <p style='font-size: 5px'>{{couponCode}}</p>\n" +
+        "          <p>{{couponName}}</p>\n" +
+        "          <p>{{couponPrice}}원 할인</p>\n" +
         "     </div>\n" +
-        "</li>\n" +
+        "</div>\n" +
         "{{/coupons}}\n";
 
     function findUsableCoupons() {

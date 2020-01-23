@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/form.css">
 <body>
-<div>
-    <h2>회원가입</h2>
-</div>
-<div>
-    <label>MemberName</label>
-    <input id="membername" type="text" name="membername" placeholder="MemberName">
-</div>
-</br>
-<div>
-    <label>Password</label>
-    <input id="password" type="password" name="password" placeholder="Password">
-</div>
-</br>
-<div>
-    <button id="signup-btn" onclick="signUp()">
-        가입하기
-    </button>
-</div>
-</br>
-<div>
-    <span>이미 회원이신가요?</span>
-    <a href="/member/login">로그인</a>
+<div class="login-page">
+    <div class="form">
+        <div>
+            <h2>회원가입</h2>
+        </div>
+        <div class="login-form">
+            <input id="member-name" type="text" name="member-name" placeholder="membername">
+            <input id="password" type="password" name="password" placeholder="password">
+        </div>
+        <div>
+            <button type="submit" onclick="login()">로그인</button>
+        </div>
+        <div>
+            <button id="signup-btn" onclick="signUp()">
+                가입하기
+            </button>
+        </div>
+        <p class="message">
+            <a href="/member/login">로그인</a>
+        </p>
+    </div>
 </div>
 </body>
     <script>
