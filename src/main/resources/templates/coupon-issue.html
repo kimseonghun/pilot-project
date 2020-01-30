@@ -48,16 +48,15 @@
     function findIssuableCoupons() {
         fetch("/api/v1/coupon/issuable", {
             method: "GET",
+        }).then(response => {
+            if (response.status !== 200) {
+                const res = response.json();
+                res.then(data => error(data.message));
+            } else {
+                const res = response.json();
+                res.then(data => addCoupon(data));
+            }
         })
-            .then(response => {
-                if (response.status !== 200) {
-                    const res = response.json();
-                    res.then(data => error(data.message));
-                } else {
-                    const res = response.json();
-                    res.then(data => addCoupon(data));
-                }
-            })
     }
 
     function addCoupon(json) {

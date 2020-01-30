@@ -61,16 +61,15 @@
     function findOrderHistory() {
         fetch("/api/v1/order/", {
             method: "GET",
+        }).then(response => {
+            if (response.status !== 200) {
+                const res = response.json();
+                res.then(data => error(data.message));
+            } else {
+                const res = response.json();
+                res.then(data => addOrder(data));
+            }
         })
-            .then(response => {
-                if (response.status !== 200) {
-                    const res = response.json();
-                    res.then(data => error(data.message));
-                } else {
-                    const res = response.json();
-                    res.then(data => addOrder(data));
-                }
-            })
     }
 
     function addOrder(json) {
@@ -93,16 +92,15 @@
     function cancelOrder(orderId) {
         fetch("/api/v1/order/" + orderId, {
             method: "DELETE",
+        }).then(response => {
+            if (response.status !== 200) {
+                const res = response.json();
+                res.then(data => error(data.message));
+            } else {
+                alert("취소 완료");
+                findOrderHistory();
+            }
         })
-            .then(response => {
-                if (response.status !== 200) {
-                    const res = response.json();
-                    res.then(data => error(data.message));
-                } else {
-                    alert("취소 완료");
-                    findOrderHistory();
-                }
-            })
     }
 </script>
 </html>

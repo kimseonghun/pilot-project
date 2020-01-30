@@ -16,9 +16,6 @@
             <input id="password" type="password" name="password" placeholder="password">
         </div>
         <div>
-            <button type="submit" onclick="login()">로그인</button>
-        </div>
-        <div>
             <button id="signup-btn" onclick="signUp()">
                 가입하기
             </button>
@@ -40,13 +37,12 @@
             const dataBody = JSON.stringify(data);
 
             fetch("/api/v1/member/signup", {
-            method: "POST",
-            body: dataBody,
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-            .then(response => {
+                method: "POST",
+                body: dataBody,
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            }).then(response => {
                 if (response.status !== 200) {
                     const res = response.json();
                     res.then(data => error(data.message));
@@ -54,7 +50,7 @@
                     location.href = "/member/login"
                 }
             })
-    }
+        }
 
         function error(errorMessage) {
             alert(errorMessage);
