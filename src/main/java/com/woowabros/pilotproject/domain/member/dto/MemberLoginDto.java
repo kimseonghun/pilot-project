@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class MemberLoginDto {
+
     private String memberName;
     private String password;
 

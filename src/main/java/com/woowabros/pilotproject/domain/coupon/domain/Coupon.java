@@ -16,6 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon extends BaseTimeEntity {
+
     private static final int EXHAUSTED_COUPON_AMOUNT = 0;
 
     @Id

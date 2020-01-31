@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class CouponInnerService {
+
     private final CouponRepository couponRepository;
 
     public CouponInnerService(CouponRepository couponRepository) {

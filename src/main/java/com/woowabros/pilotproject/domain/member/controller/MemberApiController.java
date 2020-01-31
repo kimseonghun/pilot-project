@@ -21,6 +21,7 @@ import static com.woowabros.pilotproject.config.resolver.SessionMemberArgumentRe
 @RestController
 @RequestMapping("/api/v1/member")
 public class MemberApiController {
+
     private final MemberService memberService;
 
     public MemberApiController(MemberService memberService) {

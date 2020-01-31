@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/issuedcoupon")
 public class IssuedCouponApiController {
+
     private final IssuedCouponService issuedCouponService;
 
     public IssuedCouponApiController(IssuedCouponService issuedCouponService) {

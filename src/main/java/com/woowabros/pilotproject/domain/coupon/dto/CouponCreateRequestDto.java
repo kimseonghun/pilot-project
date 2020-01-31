@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class CouponCreateRequestDto {
+
     private String name;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

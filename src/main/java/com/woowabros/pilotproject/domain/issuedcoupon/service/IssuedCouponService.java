@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class IssuedCouponService {
+
     private final IssuedCouponRepository issuedCouponRepository;
     private final CouponInnerService couponInnerService;
     private final MemberService memberService;

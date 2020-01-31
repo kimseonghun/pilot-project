@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class OrderCreateRequestDto {
+
     private List<Long> menuIds;
     private PaymentType paymentType;
     private List<String> couponCodes;

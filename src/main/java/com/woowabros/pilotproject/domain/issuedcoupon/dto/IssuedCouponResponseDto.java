@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class IssuedCouponResponseDto {
+
     private String couponCode;
     private String couponName;
     private Integer couponPrice;

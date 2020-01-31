@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class MemberCreateDto {
+
     @NotBlank
     private String memberName;
 

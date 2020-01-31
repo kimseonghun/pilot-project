@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class MemberResponseDto {
+
     private Long id;
     private String memberName;
 

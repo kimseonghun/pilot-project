@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class CouponResponseDto {
+
     private Long id;
 
     private String name;

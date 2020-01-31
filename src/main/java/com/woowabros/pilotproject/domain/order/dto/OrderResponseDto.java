@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class OrderResponseDto {
+
     private Long orderId;
     private List<MenuResponseDto> menus;
     private String paymentType;

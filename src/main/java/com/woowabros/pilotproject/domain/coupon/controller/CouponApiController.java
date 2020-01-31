@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/coupon")
 public class CouponApiController {
+
     private final CouponService couponService;
 
     public CouponApiController(CouponService couponService) {
