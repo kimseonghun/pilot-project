@@ -4,6 +4,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: woowa
     password: woowa
+
   jpa:
     show-sql: true
     properties:
